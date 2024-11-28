@@ -8,9 +8,12 @@
   --white: #ffffff;
   --gray_light: #f3f7f8;
   --gray_dark: #e3e6ea;
+  --gray: hsl(0, 4%, 67%);
   --black: #333333;
-  --green: #42b72a;
-  --blue: #0866ff;
+  --green: hsl(110, 63%, 44%);
+  --blue_accent: hsl(217, 90%, 61%);
+  --blue_light:hsl(217, 100%, 87%);
   --red: #B82121;
+
 }
 

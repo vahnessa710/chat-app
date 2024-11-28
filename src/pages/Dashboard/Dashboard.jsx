@@ -6,11 +6,11 @@ import slacking from '../../assets/logo_landscape.png';
 
 function Dashboard(props) {
   const { onLogout } = props;
-  const [chats, setChats] = useState(["Chat 1", "Chat 2", "Chat 3"]);
+ 
 
-  const addChat = () => {
-    setChats([...chats, `Chat ${chats.length + 1}`]);
-  };
+  // const handleMessages() => {
+
+  // }
 
   return (
     <div className="dashboard-container">
@@ -24,11 +24,14 @@ function Dashboard(props) {
           src={slacking} 
           alt="logo" />
               <div className='icon-container'>
-              <a href="/home"><FaHome className="icon" /></a>
+              <a 
+              href="/home"
+              
+              ><FaHome className="icon" /></a>
               </div>
               
               <div className='icon-container'>
-                <a href="/messages"><FaEnvelope className="icon" /></a>
+                <a href="/dashboard"><FaEnvelope className="icon" /></a>
               </div>
               
               <div className='icon-container'>

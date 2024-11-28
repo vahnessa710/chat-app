@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 300px;
+    gap: 250px;
     height: 100vh;
     width: 100vw;
     background-color: #f4f4f4;
@@ -10,11 +10,11 @@
   
   .login-box {
     background-color: white;
-    padding: 30px;
+    padding: 18px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
+    width: 30%;
+    height: 400px;
   }
   
   #logo-landscape {
@@ -37,7 +37,7 @@
   }
 
   .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
   
   .input-group label {
@@ -48,13 +48,14 @@
   }
   
   .input-group input {
-    width: 95%;
+    width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ddd;
     border-radius: 5px;
     outline: none;
     color: rgb(65, 65, 65);
+    height: 50px;
   }
   
   .input-group input:focus {
@@ -66,39 +67,51 @@
     padding: 12px;
     background-color: #007bff;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+    font-weight: bold;
   }
   
   .btn:hover {
     background-color: #0056b3;
   }
   
-  .signup-link {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 12px;
-  }
-  
-  .signup-link a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .signup-link a:hover {
-    text-decoration: underline;
-  }
 
   hr{
     margin-top: 15px;
     border: 0.4px solid rgba(128, 128, 128, 0.185);
   }
+
+  .forgot-pw{
+    text-align: center;
+    font-size: 14px;
+    color: hsl(217, 90%, 51%);
+  }
+
+  .toggle-link{
+    margin-left: 5px;
+    color: hsl(217, 90%, 51%);
+  }
+  .toggle-link:hover{
+    color: hsl(217, 90%, 51%);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .create-an-account{
+    margin-bottom: 15px;
+  }
   
-  .new-account-btn {
-    margin-top: 20px;
+  .new-account-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+  }
+  .new-account-btn { 
     width: 50%;
     padding: 12px;
     background-color: var(--green);
@@ -106,10 +119,15 @@
     font-size: 16px;
     border: none;
     border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .new-account-btn:hover {
+    background-color: hsl(110, 63%, 34%);
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
-
   .add-something-container {
     display: flex;
     gap: 10px;
@@ -123,12 +141,13 @@
     height: 180px;
     border-radius: 8px;
     border: 1px solid rgba(128, 128, 128, 0.24);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     color: var(--blue);
   }
 
   .add-account-box:hover{
     cursor: pointer;
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   .dp-container{
@@ -143,7 +162,7 @@
     border-top-right-radius: 5px;
   }
 
-  #user-name{
+  .user-name{
     text-align: center;
     color:rgb(65, 64, 64);
   }

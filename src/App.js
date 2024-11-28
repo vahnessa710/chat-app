@@ -15,6 +15,7 @@ function App() {
   const handleLogout = () => {
     setIsAuthenticated(false);
   };
+
   return (
     <DataProvider>
       <BrowserRouter>
@@ -39,9 +40,11 @@ function App() {
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
       </BrowserRouter>
+
     </DataProvider>
    
   );
 }
+
 
 export default App;

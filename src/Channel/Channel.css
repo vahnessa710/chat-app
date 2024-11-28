@@ -3,23 +3,29 @@
     margin-left: 0;
     border: 0.5px solid hsla(0, 0%, 50%, 0.178);
     width: 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
 }
 
-.channel-header {
+.channel-header, .dm-header {
     color: var(--charcoal-dark);
-    padding: 10px;
-    margin:10px 10px;
+    padding: 8px;
+    margin: 5px 5px;
+    font-weight: 600;
 }
 
 .create-group-button {
     margin-top: 20px;
+    margin-left: 35px;
     padding: 10px;
     background-color: var(--green);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 100%;
+    width: 70%;
+    
   }
   
   .create-group-button:hover {
@@ -32,7 +38,7 @@
     margin: 0;
   }
   .group-name {
-    color: var(--blue);
+    color: var(--black);
     text-decoration: none;
     font-weight: bold;
   }
@@ -61,19 +67,32 @@
   
   .modal-content h3 {
     margin-top: 0;
+    margin-bottom: 8px;
   }
   
-  .modal-content input {
+  .enter-channel-name {
     width: 100%;
     padding: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
   }
-  
+
+  .user-list{
+    padding: 10px;
+    border-radius: 5px;
+    height: 200px;
+    overflow-x: scroll;
+    
+  }
+
   .user-list label {
     display: block;
-    margin: 5px 0;
+    margin: 5px 8px;
+  }
+
+  .checkbox {
+    margin-right: 10px;
   }
   
   .modal-buttons button {
@@ -103,9 +122,7 @@
     background-color: #c0392b;
   }
   
-  h4{ 
-    margin-bottom: 10px;
-  }
+ 
 
   .group-list {
     padding: 10px;
@@ -131,3 +148,99 @@
   .group-list ul li {
     margin-bottom: 8px;
   }
+
+  .create-button{
+    background-color: var(--blue_accent);
+    color: var(--white);
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    width: 35%;
+  }
+
+  .create-button:hover{
+    background-color: hsl(217, 100%, 42%);
+    transition: background-color 0.5s ease;
+  }
+
+  .cancel-button{
+    background-color: var(--red);
+    color: var(--white);
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-left: 10px;
+    width: 35%;
+  }
+
+  .cancel-button:hover{
+    background-color: hsl(0, 70%, 33%);
+    transition: background-color 0.5s ease;
+  }
+
+  .group-window{
+    flex:1;
+    background-color: var(--white);
+    border: 1px solid rgba(128, 128, 128, 0.253);
+    padding: 15px;
+    background-color: var(--gray_light);
+  }
+
+  .group-window > h3{
+    margin: 10px 10px;
+  }
+
+  .message-list{
+    background-color: var(--gray_light);
+    flex:1;
+    height: 73vh;
+    padding: 15px;
+  }
+
+  .message-item{
+    background-color: var(--blue_light);
+    width: 40%;
+    border-radius: 15px;
+    height: 40px;
+    padding: 10px;
+  }
+
+  .message-input {
+     margin-top: 330px;
+  }
+  .message-input > input {
+    border-radius: 5px;
+    height: 40px;
+    width: 70%;
+    margin-top: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.267);
+    padding: 8px;
+    color: var(--black);
+    font-size: 18px;
+  }
+
+  .message-input > button {
+    border-radius: 10px;
+    background-color: var(--blue_accent);
+    border: 1px solid rgba(128, 128, 128, 0.267);
+    padding: 5px;
+    margin-left: 7px;
+    color: var(--white);
+    font-size: 18px;
+  }
+
+  .group-window > h3 {
+    font-size: 25px;
+  }
+
+.userList-individual{
+  border: 1px solid rgba(0, 0, 0, 0.096);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.userList-container{
+  height: 40vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
