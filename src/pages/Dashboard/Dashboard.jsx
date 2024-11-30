@@ -1,59 +1,52 @@
 import React, { useState } from 'react';
-import { FaHome, FaEnvelope, FaCog, FaUser, FaSignOutAlt } from 'react-icons/fa'; // Importing icons
+import { FaHome, FaEnvelope, FaCog, FaUser, FaSignOutAlt } from 'react-icons/fa'; 
 import './Dashboard.css'; 
 import Channel from '../../Channel/Channel.jsx';
 import slacking from '../../assets/logo_landscape.png';
+import Chat from '../../Chat/Chat.jsx';
 
-function Dashboard(props) {
-  const { onLogout } = props;
- 
-
-  // const handleMessages() => {
-
-  // }
-
+function Dashboard({setReceiver, onLogout}) {
   return (
     <div className="dashboard-container">
 
-      {/* Main Content */}
       <div className="main-content">
         
         <header className="header">
-
           <img 
           src={slacking} 
           alt="logo" />
               <div className='icon-container'>
-              <a 
-              href="/home"
+                <a
+                ><FaHome className="icon" /></a>
+              </div>
               
-              ><FaHome className="icon" /></a>
+              <div className='icon-container' >
+                <a><FaEnvelope className="icon" /></a>
               </div>
               
               <div className='icon-container'>
-                <a href="/dashboard"><FaEnvelope className="icon" /></a>
+                <a><FaCog className="icon" /></a>
               </div>
               
               <div className='icon-container'>
-              <a href="/settings"><FaCog className="icon" /></a>
+                <a><FaUser className="icon" /></a>
               </div>
-              
-              <div className='icon-container'>
-                <a href="/profile"><FaUser className="icon" /></a>
-              </div>
-              
-
-          <div className="user-info">
-            <span>Vahnessa</span>
-            <button 
-            className="logout-button"
-            onClick={onLogout}
-            > <FaSignOutAlt /> Logout
-            </button>
-          </div>
+              <div className="user-info">
+                <span>Vahnessa</span>
+                <button 
+                  className="logout-button"
+                  onClick={onLogout}
+                > 
+                  <FaSignOutAlt /> 
+                  Logout
+                </button>
+             </div>
         </header>
-        <Channel />
+
+        <Channel setReceiver={setReceiver} />
+
       </div>
+      
     </div>
   );
 }

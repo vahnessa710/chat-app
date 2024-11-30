@@ -30,7 +30,7 @@
     color: var(--black);
   }
 
-  #recent-logins-p {
+  .recent-logins-description {
     font-size: 15px;
     margin-bottom: 25px;
     color: gray;
@@ -165,4 +165,11 @@
   .user-name{
     text-align: center;
     color:rgb(65, 64, 64);
+  }
+
+  .add-account-caption{
+    color: var(--blue_accent);
+    font-weight: bold;
+    text-align: center;
+    margin-top: 50px;
   }

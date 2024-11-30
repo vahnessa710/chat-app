@@ -13,6 +13,9 @@
   --green: hsl(110, 63%, 44%);
   --blue_accent: hsl(217, 90%, 61%);
   --blue_light:hsl(217, 100%, 87%);
+  --sender:#0084FF;
+  --receiver: #F0F0F0;
+  --chat_bar: #F0F2F4;
   --red: #B82121;
 
 }

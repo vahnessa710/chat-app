@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
+import Chat from './Chat/Chat.jsx';
 import Login from './pages/Login/Login.jsx';
 import DataProvider from './context/DataProvider.jsx';
 import './App.css';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
@@ -30,17 +30,21 @@ function App() {
               path="/dashboard"
               element={
                 isAuthenticated ? (
-                  <Dashboard onLogout={handleLogout} />
+                  <Dashboard 
+                  onLogout={handleLogout}
+                   />
                 ) : (
                   <Navigate to="/login" />
                 )
               }
             />
+            
             {/* Navigate - forces the browser to attach this path to the URL */}
             <Route path="*" element={<Navigate to="/login" />} />
+            
           </Routes>
+          
       </BrowserRouter>
-
     </DataProvider>
    
   );
