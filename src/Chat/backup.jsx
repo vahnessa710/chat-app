@@ -1,3 +1,131 @@
+import { useState, useEffect } from "react";
+import { useData } from "../context/DataProvider";
+import axios from "axios";
+import { API_URL } from "../constants/Constants";
+import { IoMdSend } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import '../Chat/Chat.css';
+function Chat({receiver, channel}) {
+    const { userHeaders } = useData();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [reply, setReply] = useState('')
+    const [channelMessages, setChannelMessages] = useState([]);
+    
+    const fetchMessages = async () => {
+        if (!receiver || !receiver.id) return; // Don't fetch if no receiver is selected
+        setLoading(true);
+        setError(null);
+
+        const receiverClass = "User"; // Determine receiver type
+
+        try {
+          const response = await axios.get(`${API_URL}/messages?receiver_id=${receiver.id}&receiver_class=${receiverClass}`,
+            { headers: userHeaders });
+            setMessages(response.data.data); // Assuming messages are in `data` field
+            
+        } catch (err) {
+            setError("Failed to fetch messages. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+        console.log("Fetching messages with parameters:", {
+            receiver_id: receiver,
+            receiver_class: "User",           
+          });
+          console.log("Headers:", userHeaders);
+      };
+    
+      useEffect(() => {
+        fetchMessages();
+      }, [receiver]); // Re-fetch messages when receiver changes
+
+      const handleReply = (e) => {
+        setReply(e.target.value); // Update state with input value
+      };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+        const messageInfo = {
+            receiver_id: receiver.id,
+            receiver_class: "User",
+            body: reply
+        }
+        
+        const response = await axios.post(`${API_URL}/messages`, messageInfo, { headers: userHeaders});
+        const { data } = response;
+        if(data.data){
+            return alert("message sent!")
+        }
+          } catch(error){
+              console.log(error);
+          } 
+          
+      };
+   
+  return (
+    <div className="group-window">
+        {receiver ? (
+        <>
+          <div className="receiver-header-container">
+            <h3>
+              {receiver?.email|| "wrong move"}
+            </h3>
+          </div> 
+          {/* {loading && <p>Loading messages...</p>} */}
+          {error && <p className="error">{error}</p>}
+          <div className="messages">
+            {messages.length > 0 ? (
+              messages.map((msg) => (
+                <div key={msg.id} className={`message ${msg.sender.email === receiver?.email ? 'receiver' : 'sender'}`}>
+                  <p>
+                    <strong>{msg.sender.email}</strong>: {msg.body}
+                  </p>
+            </div>
+              ))
+            ) : (
+              <p>No messages to display.</p>
+            )}
+          </div>
+        </>
+      ) : (
+        <p>Select a user or channel to view messages.</p>
+      )}
+
+      <div>
+        {channel ?(<div><p>!!!!!!!!!!!!!!!!Display {channel} Number here!!!!!!!!!!!!!</p></div>): null}
+        
+
+            
+      </div>
+
+     
+     
+     <div className = "chat-bar">
+        <input
+        type="text"
+        value={reply} // Controlled input
+        onChange={handleReply} // Update state on input change
+        />
+
+        <button
+            onClick = {handleSubmit}>
+            <IoMdSend />
+        </button>    
+     </div>
+       
+          
+        </div>
+                
+
+  
+  );
+}
+
+// export default Chat;
+
 import React, { useState, useEffect } from "react";
 import { useData } from "../context/DataProvider";
 import axios from "axios";
@@ -10,19 +138,15 @@ function Channel() {
   const { userHeaders } = useData();
   const [userList, setUserList] = useState([]);
   const [channel, setChannel] = useState(null);
-  const [receiver, setReceiver] = useState(null);
-  const [channelList, setChannelList] = useState ([]); // render channel list 
-  const [selectedUsers, setSelectedUsers] = useState([]); // checkbox for new channel
+  const [channelList, setChannelList] = useState ([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false); // toggle window for creating new channel
-  const [newChannelName, setNewChannelName] = useState(""); // new channel name
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // To manage edit modal
-  const [channelUsers, setChannelUsers] = useState([]); // To store the current users of the channel
-  const [currentChannel, setCurrentChannel] = useState(null)
+  const [newGroupName, setNewGroupName] = useState(""); // new channel name
+  const [receiver, setReceiver] = useState(null);
   
 
   const handleReceiver = ({ id, email }) => {
     setReceiver({ id, email }); // Store both id and email
-    setChannel(null); // Clear channel when selecting a receiver
     console.log(receiver)
   };
 
@@ -61,42 +185,21 @@ function Channel() {
     }
   })
 
-  const handleChannel = (id, name) => {
-    setChannel( { id, name } ); // Store both id and name
-    setReceiver(null);
+  const handleChannel = ( id) => {
+    setChannel( id ); // Store both id and name
+ 
   };
   
 
-  const handleCreateChannel = async (e) => {
-    e.preventDefault();
-    try {
-      const newChannelData = { 
-        name: newChannelName, 
-        user_ids: selectedUsers
-      };
 
-      const response = await axios.post(`${API_URL}/channels`, newChannelData);
-      console.log("Signup Response:", response.data); // Debugging response
-      console.log("Selected Users in Channel:", selectedUsers); 
-      if (response.data) {
-        alert("Channel created successfully!");
-      }
-    } catch (error) {
-      console.log(error)
-      alert(error.response?.data?.errors || "Error creating channel");
-    }
-    if (newChannelName.trim()) {
+
+
+  const createGroup = () => {
+    if (newGroupName.trim()) {
       
     }
   };
-  
-  const getChannelUsers = async () => {
-   <></>
-  };
 
-
-  console.log('users inside this channel', channelUsers)
-  console.log('channel in channel',channel)
   return (
     
     <div className="dashboard-container">
@@ -115,15 +218,9 @@ function Channel() {
                     <a 
                       className='group-name'
                       href="#"
-                      onClick={() => handleChannel(channel.id, channel.name)}>
+                      onClick={() => handleChannel(channel.id)}>
                       {`# ${channel.name}`}
                     </a>
-                    <button 
-                      className="edit-channel-button"
-                      onClick={() => getChannelUsers}
-                    >
-                      Edit
-                    </button>
                   </li>
                 ))}
                 
@@ -170,8 +267,8 @@ function Channel() {
               className="enter-channel-name"
               type="text"
               placeholder="Enter #channel name"
-              value={newChannelName}
-              onChange={(e) => setNewChannelName(e.target.value)}
+              value={newGroupName}
+              onChange={(e) => setNewGroupName(e.target.value)}
             />
             <h4 className="invite-users">Invite Users</h4>
 
@@ -181,8 +278,8 @@ function Channel() {
                   <input
                     className="checkbox"
                     type="checkbox"
-                    value={String(user.id)}
-                    checked={selectedUsers.includes(String(user.id))}
+                    value={user.uid} // Use UID as the value
+                    checked={selectedUsers.includes(user.uid)}
                     onChange={(e) => {
                       const value = e.target.value;
                       setSelectedUsers((prev) =>
@@ -197,7 +294,7 @@ function Channel() {
 
             <button 
              className="create-button"
-             onClick={handleCreateChannel}>
+             onClick={createGroup}>
               Create
             </button>
 
@@ -210,48 +307,10 @@ function Channel() {
         </div>
     
       )}
-
-{/* modal for editing users inside the current channel */}
-{isEditModalOpen && (
-  <div className="modal">
-    <div className="modal-content">
-      <h3>Edit Channel: {currentChannel}</h3>
-      <h4>Manage Users</h4>
-      <div className="user-list">
-        {userList.map((user) => (
-          <label key={user.id}>
-            <input
-              className="checkbox"
-              type="checkbox"
-              value={String(user.id)}
-              checked={channelUsers.includes(String(user.id))} // Pre-select existing members
-              
-            />
-            {user.name || user.email}
-          </label>
-        ))}
-      </div>
-      <button
-        className="save-button"
-      >
-        Save
-      </button>
-      <button
-        onClick={() => setIsEditModalOpen(false)}
-        className="cancel-button"
-      >
-        Cancel
-      </button>
-    </div>
-  </div>
-)}
-
-
-
       <Chat receiver={receiver} channel={channel} />
    </div>
    );
   
 }
 
-export default Channel;
+// export default Channel;

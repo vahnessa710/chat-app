@@ -5,22 +5,25 @@ import { API_URL } from "../constants/Constants";
 import { IoMdSend } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import '../Chat/Chat.css';
-function Chat({receiver}) {
+function Chat({receiver, channel}) {
     const { userHeaders } = useData();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [messages, setMessages] = useState([]);
     const [reply, setReply] = useState('')
+   
+
 
     const fetchMessages = async () => {
-        if (!receiver || !receiver.id) return; // Don't fetch if no receiver is selected
+        if (!receiver && !channel ) return; // Don't fetch if no receiver is selected
         setLoading(true);
         setError(null);
 
-        const receiverClass = "User"; // Determine receiver type
+        const receiverClass = channel ? "Channel" : "User";
+        const receiverId = channel ? channel.id : receiver?.id;
 
         try {
-          const response = await axios.get(`${API_URL}/messages?receiver_id=${receiver.id}&receiver_class=${receiverClass}`,
+          const response = await axios.get(`${API_URL}/messages?receiver_id=${receiverId}&receiver_class=${receiverClass}`,
             { headers: userHeaders });
             setMessages(response.data.data); // Assuming messages are in `data` field
             
@@ -29,16 +32,11 @@ function Chat({receiver}) {
         } finally {
             setLoading(false);
         }
-        console.log("Fetching messages with parameters:", {
-            receiver_id: receiver,
-            receiver_class: "User",           
-          });
-          console.log("Headers:", userHeaders);
       };
     
       useEffect(() => {
         fetchMessages();
-      }, [receiver]); // Re-fetch messages when receiver changes
+      }, [channel, receiver, userHeaders]); // Re-fetch messages when receiver changes
 
       const handleReply = (e) => {
         setReply(e.target.value); // Update state with input value
@@ -46,10 +44,12 @@ function Chat({receiver}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const receiverClass = channel ? "Channel" : "User";
+    const receiverId = channel ? channel.id : receiver?.id;
     try{
         const messageInfo = {
-            receiver_id: receiver.id,
-            receiver_class: "User",
+            receiver_id: receiverId,
+            receiver_class: receiverClass,
             body: reply
         }
         
@@ -66,11 +66,15 @@ function Chat({receiver}) {
    
   return (
     <div className="group-window">
-        {receiver ? (
+        {receiver || channel ? (
         <>
           <div className="receiver-header-container">
           <h3>
-            {receiver?.email|| "wrong move"}
+            {channel
+              ? `# ${channel.name}`
+              : receiver
+              ? receiver.email
+              : "Select a user or channel"}
           </h3>
           </div> 
           {loading && <p>Loading messages...</p>}
@@ -78,10 +82,20 @@ function Chat({receiver}) {
           <div className="messages">
             {messages.length > 0 ? (
               messages.map((msg) => (
-                <div key={msg.id} className={`message ${msg.sender.email === receiver?.email ? 'receiver' : 'sender'}`}>
-                  <p>
-                    <strong>{msg.sender.email}</strong>: {msg.body}
-                  </p>
+                <div 
+                  key={msg.id} 
+                  className={`message 
+                    ${
+                      (channel && msg.sender.uid === userHeaders.uid) || // Check if it's a channel message and the current user is the sender
+                      (!channel && msg.sender.email === receiver?.email) // Check if it's a direct message and the sender matches the receiver's email
+                        ? 'sender' 
+                        : 'receiver'
+                    }`}
+                   >
+
+                    <p>
+                    {msg.body}
+                    </p>
                 </div>
               ))
             ) : (
@@ -92,6 +106,8 @@ function Chat({receiver}) {
       ) : (
         <p>Select a user or channel to view messages.</p>
       )}
+
+     
      <div className = "chat-bar">
         <input
         type="text"
@@ -106,9 +122,9 @@ function Chat({receiver}) {
      </div>
        
           
-        </div>
+</div>
                 
-
+             
   
   );
 }
