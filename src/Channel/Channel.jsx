@@ -9,16 +9,16 @@ import { useNavigate } from "react-router-dom";
 function Channel() {
   const { userHeaders } = useData();
   const [userList, setUserList] = useState([]);
-  const [channel, setChannel] = useState(null);
+  const [channel, setChannel] = useState({id: 9, name: 'General'});
   const [receiver, setReceiver] = useState(null);
   const [channelList, setChannelList] = useState ([]); // render channel list 
   const [selectedUsers, setSelectedUsers] = useState([]); // checkbox for new channel
   const [isModalOpen, setIsModalOpen] = useState(false); // toggle window for creating new channel
   const [newChannelName, setNewChannelName] = useState(""); // new channel name
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // To manage edit modal
+  
   const [channelUsers, setChannelUsers] = useState([]); // To store the current users of the channel
   const [currentChannel, setCurrentChannel] = useState(null)
-  
+  const [channelDetails, setChannelDetails] = useState();
 
   const handleReceiver = ({ id, email }) => {
     setReceiver({ id, email }); // Store both id and email
@@ -75,11 +75,11 @@ function Channel() {
         user_ids: selectedUsers
       };
 
-      const response = await axios.post(`${API_URL}/channels`, newChannelData);
-      console.log("Signup Response:", response.data); // Debugging response
-      console.log("Selected Users in Channel:", selectedUsers); 
+      const response = await axios.post(`${API_URL}/channels`, newChannelData, {headers: userHeaders});
+
       if (response.data) {
         alert("Channel created successfully!");
+        setIsModalOpen(false);
       }
     } catch (error) {
       console.log(error)
@@ -88,25 +88,37 @@ function Channel() {
     if (newChannelName.trim()) {
       
     }
+    
   };
   
-  const getChannelUsers = async () => {
-   <></>
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setSelectedUsers("");
+    setNewChannelName("");
+  };
+
+  const getChannelDetails = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/channels/${channel.id}`, { headers: userHeaders });
+      const channelDetails = response.data;
+      console.log("channelDetails props in Channel:", channelDetails)
+      
+    } catch (error) {
+      if (error.response.data.errors) {
+        return alert("Cannot get channel details");
+      }
+    }
   };
 
 
-  console.log('users inside this channel', channelUsers)
-  console.log('channel in channel',channel)
+  console.log("channel.id props in Channel:", channel.id)
+  
   return (
-    
     <div className="dashboard-container">
-
+      
       <div className="channel-bar">
-
         <h2 className="channel-header">Channel</h2>
-            
               <ul className="channel-list-container">
-
                 {channelList.map((channel, index) => (
                   <li 
                     key={index} 
@@ -118,15 +130,8 @@ function Channel() {
                       onClick={() => handleChannel(channel.id, channel.name)}>
                       {`# ${channel.name}`}
                     </a>
-                    <button 
-                      className="edit-channel-button"
-                      onClick={() => getChannelUsers}
-                    >
-                      Edit
-                    </button>
                   </li>
-                ))}
-                
+                ))}       
               </ul>
             
 
@@ -160,8 +165,7 @@ function Channel() {
         
       </div>
 
-
-      {/* Modal for Group Creation */}
+      {/* Modal for Channel Creation */}
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
@@ -202,7 +206,7 @@ function Channel() {
             </button>
 
             <button 
-              onClick={() => setIsModalOpen(false)}
+              onClick={handleCancel}
               className="cancel-button">
               Cancel
             </button>
@@ -211,47 +215,10 @@ function Channel() {
     
       )}
 
-{/* modal for editing users inside the current channel */}
-{isEditModalOpen && (
-  <div className="modal">
-    <div className="modal-content">
-      <h3>Edit Channel: {currentChannel}</h3>
-      <h4>Manage Users</h4>
-      <div className="user-list">
-        {userList.map((user) => (
-          <label key={user.id}>
-            <input
-              className="checkbox"
-              type="checkbox"
-              value={String(user.id)}
-              checked={channelUsers.includes(String(user.id))} // Pre-select existing members
-              
-            />
-            {user.name || user.email}
-          </label>
-        ))}
-      </div>
-      <button
-        className="save-button"
-      >
-        Save
-      </button>
-      <button
-        onClick={() => setIsEditModalOpen(false)}
-        className="cancel-button"
-      >
-        Cancel
-      </button>
-    </div>
-  </div>
-)}
-
-
-
-      <Chat receiver={receiver} channel={channel} />
+      <Chat receiver={receiver} channel={channel} userList = {userList} />
    </div>
    );
   
-}
+  }
 
 export default Channel;

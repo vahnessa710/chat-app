@@ -3,16 +3,16 @@ import { useData } from "../context/DataProvider";
 import axios from "axios";
 import { API_URL } from "../constants/Constants";
 import { IoMdSend } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
 import '../Chat/Chat.css';
-function Chat({receiver, channel}) {
+
+
+function Chat({receiver, channel, userList}) {
     const { userHeaders } = useData();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [messages, setMessages] = useState([]);
     const [reply, setReply] = useState('')
-   
-
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // To manage edit modal
 
     const fetchMessages = async () => {
         if (!receiver && !channel ) return; // Don't fetch if no receiver is selected
@@ -38,6 +38,7 @@ function Chat({receiver, channel}) {
         fetchMessages();
       }, [channel, receiver, userHeaders]); // Re-fetch messages when receiver changes
 
+
       const handleReply = (e) => {
         setReply(e.target.value); // Update state with input value
       };
@@ -56,13 +57,18 @@ function Chat({receiver, channel}) {
         const response = await axios.post(`${API_URL}/messages`, messageInfo, { headers: userHeaders});
         const { data } = response;
         if(data.data){
-            return alert("message sent!")
+             alert("Message sent!");
+            setReply(""); // Clear the input
+            fetchMessages(); // Refresh messages
         }
           } catch(error){
               console.log(error);
           } 
           
       };
+      const addUserToChannel = () => {
+
+      }
    
   return (
     <div className="group-window">
@@ -70,63 +76,107 @@ function Chat({receiver, channel}) {
         <>
           <div className="receiver-header-container">
           <h3>
-            {channel
+            {channel?.name
               ? `# ${channel.name}`
-              : receiver
+              : receiver?.email
               ? receiver.email
               : "Select a user or channel"}
           </h3>
-          </div> 
-          {loading && <p>Loading messages...</p>}
-          {error && <p className="error">{error}</p>}
-          <div className="messages">
-            {messages.length > 0 ? (
-              messages.map((msg) => (
-                <div 
-                  key={msg.id} 
-                  className={`message 
-                    ${
-                      (channel && msg.sender.uid === userHeaders.uid) || // Check if it's a channel message and the current user is the sender
-                      (!channel && msg.sender.email === receiver?.email) // Check if it's a direct message and the sender matches the receiver's email
-                        ? 'sender' 
-                        : 'receiver'
-                    }`}
-                   >
 
-                    <p>
-                    {msg.body}
-                    </p>
-                </div>
-              ))
-            ) : (
-              <p>No messages to display.</p>
-            )}
-          </div>
-        </>
-      ) : (
-        <p>Select a user or channel to view messages.</p>
-      )}
+          <button 
+            className="edit-channel-button"
+            onClick = {()=>setIsEditModalOpen(true)}
+          >
+            Edit
+          </button>
 
-     
-     <div className = "chat-bar">
+          {/* modal for editing users inside the current channel */}
+{isEditModalOpen && (
+  <div className="modal">
+    <div className="modal-content">
+      <h3>Edit Channel: {channel.name}</h3>
+      <h4>Manage Users</h4>
+      <div className="user-list">
+        {userList.map((user) => (
+          <label key={user.id}>
+            <input
+              className="checkbox"
+              type="checkbox"
+            />
+            {user.name || user.email}
+          </label>
+        ))}
+      </div>
+      
+      <div className="edit-channel-btn-container">
+        <button
+            className="save-button"
+            onClick={addUserToChannel}>
+            Save
+        </button>
+        <button
+            onClick={() => setIsEditModalOpen(false)}
+            className="cancel-button">
+            Cancel
+        </button> 
+      </div>
+      
+      
+    </div>
+  </div>
+)}
+
+</div> 
+
+{loading && <p>Loading messages...</p>}
+{error && <p className="error">{error}</p>}
+<div className="messages">
+
+  {messages.length > 0 ? (
+    messages.map((msg) => (
+      <div 
+        key={msg.id} 
+        className={`message 
+          ${
+            (channel && msg.sender.uid === userHeaders.uid) || // Check if it's a channel message and the current user is the sender
+            (!channel && msg.sender.email === receiver?.email) // Check if it's a direct message and the sender matches the receiver's email
+              ? 'sender' 
+              : 'receiver'
+          }`}
+          >
+
+          <p>
+          {msg.body}
+          </p>
+      </div>
+    ))
+  ) : (
+    <p>No messages to display.</p>
+  )}
+</div>
+        
+      
+      <div className = "chat-bar">
         <input
+        className="chat-input"
         type="text"
         value={reply} // Controlled input
         onChange={handleReply} // Update state on input change
         />
 
         <button
-            onClick = {handleSubmit}>
+            onClick = {handleSubmit}
+            className = 'send-btn'>
             <IoMdSend />
         </button>    
      </div>
-       
-          
-</div>
-                
-             
-  
-  );
-}
+     </>       
+      ) : (
+        <p>Select a user or channel to view messages.</p>
+      )}
+        
+</div> 
+
+)};
 
 export default Chat;

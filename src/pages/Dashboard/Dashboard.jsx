@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import { useData } from "../../context/DataProvider.jsx"
 import { FaHome, FaEnvelope, FaCog, FaUser, FaSignOutAlt } from 'react-icons/fa'; 
 import './Dashboard.css'; 
 import Channel from '../../Channel/Channel.jsx';
 import slacking from '../../assets/logo_landscape.png';
-import Chat from '../../Chat/Chat.jsx';
 
-function Dashboard({setReceiver, onLogout}) {
+
+function Dashboard({onLogout}) {
+  const { userHeaders } = useData();
+
   return (
     <div className="dashboard-container">
 
@@ -32,7 +34,7 @@ function Dashboard({setReceiver, onLogout}) {
                 <a><FaUser className="icon" /></a>
               </div>
               <div className="user-info">
-                <span>Vahnessa</span>
+                <span>{userHeaders.uid.split("@")[0]}</span>
                 <button 
                   className="logout-button"
                   onClick={onLogout}
@@ -43,7 +45,7 @@ function Dashboard({setReceiver, onLogout}) {
              </div>
         </header>
 
-        <Channel setReceiver={setReceiver} />
+        <Channel />
 
       </div>
       

@@ -21,7 +21,7 @@
 }
 
 /* Create Group Button */
-.create-group-button {
+.create-group-button, .save-button {
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
@@ -122,14 +122,6 @@
   z-index: 1000;
 }
 
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 400px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  text-align: center;
-}
 
 .modal-content h3 {
   margin-bottom: 10px;
@@ -152,32 +144,11 @@
   font-weight: bold;
 }
 
-/* User List inside Modal */
-.user-list {
-  padding: 10px;
-  border-radius: 5px;
-  height: 200px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: #f9f9f9;
-  border: 1px solid rgba(128, 128, 128, 0.2);
-}
 
-.user-list label {
-  display: block;
-  margin: 5px 8px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--charcoal-dark);
-}
-
-.checkbox {
-  margin-right: 10px;
-}
 
 /* Modal Buttons */
-.create-button,
-.cancel-button {
+.create-button, .save-button, .cancel-button
+{
   padding: 10px;
   border-radius: 5px;
   border: none;
@@ -185,17 +156,17 @@
   width: 45%;
 }
 
-.create-button {
+.create-button,.save-button {
   background-color: var(--blue_accent);
   color: var(--white);
 }
 
-.create-button:hover {
+.create-button, .save-button:hover {
   background-color: hsl(217, 100%, 42%);
   transition: background-color 0.5s ease;
 }
 
-.cancel-button {
+.cancel-button{
   background-color: var(--red);
   color: var(--white);
 }
