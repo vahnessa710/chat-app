@@ -6,6 +6,7 @@ import { useData } from "../../context/DataProvider";
 import './Login.css';  
 import logoLandscape from "../../assets/logo_landscape.png";
 import rose from '../../assets/rose.png';
+import { IoMdAddCircle } from "react-icons/io";
 
 function Login(props) {
   const { onLogin } = props;
@@ -14,6 +15,7 @@ function Login(props) {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isSignup, setIsSignup] = useState(false); // Toggle signup
+
   const navigate = useNavigate();
   
 
@@ -115,14 +117,21 @@ function Login(props) {
                             alt = 'profile'
                             />
                       </div>
-                      <div class = "user-name">Vahnessa</div>
+                      <div className = "user-name">vahnessa.gonzales</div>
                   </div>
-                  <div className="add-account-box">
-                    <p 
-                    className='add-account-caption'
-                    onClick={() => setIsSignup(true)}
-                    >+ Add Account</p>
+                  <div 
+                    className="add-account-box"
+                    onClick={() => setIsSignup(true)} >
+                    <div className='img-box'>
+                      <p 
+                      className='add-account-icon'
+                      >
+                      <IoMdAddCircle /> 
+                      </p>
+                    </div>
+                    <p className='add-account-caption'>Add Account</p>
                   </div>
+                    
             </div>
       </div>
 
@@ -132,11 +141,15 @@ function Login(props) {
     {isSignup ? (
         <form onSubmit={handleSignup}>
           <h2 className='create-an-account'>Create an Account</h2>
-          <p id = "recent-logins-description">It's quick and easy.</p>
+          
+            <p className = "create-account-description">It's quick and easy.</p>
+            <hr />
+          
 
             <div className="input-group">
               <label>Email</label>
               <input
+                
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -172,12 +185,15 @@ function Login(props) {
             Sign Up
             </button>
             
+            <div className='caption-under-signUp-modal'>
             <span>
               Already have an account?
                 <span className="toggle-link" onClick={() => setIsSignup(false)}>
                 Login here.
                 </span>
             </span>
+            </div>
+            
             
     </form>
   ) : ( 

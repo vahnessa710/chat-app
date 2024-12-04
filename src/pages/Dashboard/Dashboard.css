@@ -9,7 +9,6 @@ body {
 .dashboard-container {
   display: flex;
   height: 100vh;
-  overflow: hidden;
 }
 
 /* Sidebar Styling */
@@ -72,7 +71,6 @@ body {
 .main-content {
   flex: 1;
   background-color: whitesmoke;
-  /* overflow-y: auto; */
 }
 
 .header {
@@ -86,9 +84,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.header img {
- width: 150px;
-}
 
 .icon-container > a {
   color: rgb(121, 113, 113);
@@ -132,5 +127,10 @@ body {
 
 .logout-button:hover {
   background-color: #c0392b;
+}
+
+.logo-only {
+  width: 40px;
+  height: 40px;
 }
 

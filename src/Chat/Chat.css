@@ -31,7 +31,6 @@
   flex: 1; /* Take up remaining space */
   padding: 10px;
   overflow-y: auto; /* Enable scrolling */
-  background-color: #f9f9f9;
   margin: 10px 0;
   border-radius: 6px;
   display: flex;
@@ -152,6 +151,7 @@
   overflow-x: hidden;
   background-color: #f9f9f9;
   border: 1px solid rgba(128, 128, 128, 0.2);
+  text-align: left;
 }
 
 .user-list label {
@@ -169,4 +169,43 @@
 .edit-channel-btn-container{
   display: flex;
   flex-direction: row;
+}
+
+.edit-channel-button{
+  border-radius: 5px;
+  border: none;
+  padding: 3px 5px 0 5px;
+  font-size: 16px;
+  background-color: var(--gray_dark);
+  vertical-align: middle;
+}
+
+.edit-channel-button:hover {
+  transition: background-color 0.3s ease;
+  background-color: hsl(214, 14%, 80%);
+}
+.cancel-button-editChannel{
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  width: 45%;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  background-color: var(--red);
+  color: var(--white);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: center;
+}
+
+.timestamp {
+  font-size: 0.8em;
+  color: gray;
+  display: block;
+  margin-top: 5px;
 }

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
-import Chat from './Chat/Chat.jsx';
 import Login from './pages/Login/Login.jsx';
 import DataProvider from './context/DataProvider.jsx';
 import './App.css';
@@ -11,7 +10,6 @@ function App() {
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
-
   const handleLogout = () => {
     setIsAuthenticated(false);
   };

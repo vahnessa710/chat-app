@@ -8,21 +8,22 @@
   flex-direction: column;
   padding: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 540px;
 }
 
 .channel-header,
 .dm-header {
   color: var(--charcoal-dark);
   padding: 8px;
-  margin: 10px 0;
+  margin: 0;
   font-size: 16px;
   font-weight: bold;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 }
 
 /* Create Group Button */
-.create-group-button, .save-button {
-  margin-top: 20px;
+.create-group-button {
+  margin-bottom: 5px;
   margin-left: auto;
   margin-right: auto;
   padding: 10px;
@@ -46,6 +47,7 @@
   margin: 10px 0;
   padding: 0;
   list-style: none;
+  overflow-y: scroll;
 }
 
 .group-list {
@@ -56,6 +58,7 @@
   font-weight: bold;
   color: var(--charcoal-dark);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+ 
 }
 
 .group-list:hover {
@@ -75,7 +78,7 @@
 
 /* User List */
 .userList-container {
-  height: 40vh;
+  height: 30vh;
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 10px;
@@ -175,3 +178,4 @@
   background-color: hsl(0, 70%, 33%);
   transition: background-color 0.5s ease;
 }
+

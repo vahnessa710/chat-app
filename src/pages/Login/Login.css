@@ -14,7 +14,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 30%;
-    height: 400px;
+    height: auto;
   }
   
   #logo-landscape {
@@ -84,6 +84,7 @@
   hr{
     margin-top: 15px;
     border: 0.4px solid rgba(128, 128, 128, 0.185);
+    margin-bottom: 15px;
   }
 
   .forgot-pw{
@@ -103,7 +104,8 @@
   }
 
   .create-an-account{
-    margin-bottom: 15px;
+    margin-bottom: 8px;
+    text-align: center;
   }
   
   .new-account-container{
@@ -167,9 +169,38 @@
     color:rgb(65, 64, 64);
   }
 
-  .add-account-caption{
+  .add-account-icon{
     color: var(--blue_accent);
     font-weight: bold;
     text-align: center;
-    margin-top: 50px;
+    font-size: 50px;
   }
+
+  .add-account-caption{
+    color: gray;
+    color: var(--blue_accent);
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+.caption-under-signUp-modal{
+  margin-top: 15px;
+}
+
+.create-account-description {
+    font-size: 17px;
+    margin-bottom: 10px;
+    color: gray;
+    text-align: center;
+}
+
+.img-box {
+  background-color: var(--gray);
+  width: 148px;
+  height: 140px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 50px 10px 15px 10px;
+}

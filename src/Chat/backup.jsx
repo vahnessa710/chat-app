@@ -314,3 +314,12 @@ function Channel() {
 }
 
 // export default Channel;
+
+value={String(user.id)}
+                    checked={selectedUsers.includes(String(user.id))}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setSelectedUsers((prev) =>
+                        e.target.checked ? [...prev, value] : prev.filter((u) => u !== value)
+                      );
+                    }}
