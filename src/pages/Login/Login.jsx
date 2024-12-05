@@ -149,7 +149,7 @@ function Login(props) {
             <div className="input-group">
               <label>Email</label>
               <input
-                
+                className='input-group-signUp'
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -160,6 +160,7 @@ function Login(props) {
             <div className="input-group">
               <label>Password</label>
               <input
+                className='input-group-signUp'
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -171,6 +172,7 @@ function Login(props) {
             <div className="input-group">
               <label>Confirm password</label>
               <input
+                className='input-group-signUp'
                 type="password"
                 value={passwordConfirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
@@ -200,6 +202,7 @@ function Login(props) {
     <form onSubmit={handleSubmit}>
         <div className="input-group">
           <input
+            className='input-group-login'
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -210,6 +213,7 @@ function Login(props) {
 
         <div className="input-group">
           <input
+            className='input-group-login'
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

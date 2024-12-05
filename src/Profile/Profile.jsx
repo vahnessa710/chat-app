@@ -1,19 +1,18 @@
 import { useState , useEffect } from "react";
-import { useData } from "../context/DataProvider";
 import '../Profile/Profile.css'
 import { MdEmail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
 import { RiGroup2Fill } from "react-icons/ri";
 
-function Profile({receiver, channel, userList, messages, setMessages}) {
- const { userHeaders } = useData();
+function Profile({receiver, channel, messages, userList, channelDetails, channelMembers, setChannelMembers}) {
  const [searchWindow, setSearchWindow] = useState(false);
  const [searchKeyword, setSearchKeyword] = useState(""); // State for search keyword
  const [filteredMessages, setFilteredMessages] = useState([]); // State for filtered messages
  const [isTyping, setIsTyping] = useState(false);
+ const [memberEmail, setMemberEmail] = useState('');
+ console.log('Profile Props, channelDetails:', channelDetails)
 
- const [displayChannelUsers, setDisplayChannelUsers] = useState([]);
    // Generate initials for receiver
    const initials = receiver?.email
    ? receiver.email
@@ -28,6 +27,7 @@ function Profile({receiver, channel, userList, messages, setMessages}) {
         setFilteredMessages([]); // Clear filtered messages
         setSearchWindow(false); // Hide the search window
         setIsTyping(false);
+        setChannelMembers([]);
       }, [receiver, channel]); // Runs when the receiver or channel changes
 
         useEffect(() => {
@@ -59,6 +59,24 @@ function Profile({receiver, channel, userList, messages, setMessages}) {
         setIsTyping(true); // User is typing
       };
 
+     // Function to get the email of a member based on the user_id match
+const getMemberEmail = () => {
+  // Iterate over the channelMembers array
+  for (let member of channelMembers) {
+    // Find the user in userList where the IDs match
+    const user = userList.find((user) => user.id === member.user_id);
+    if (user) {
+      setMemberEmail(user.email); // Set the member email if a match is found
+      return; // Exit the function once the match is found
+    }
+  }
+  // If no match is found, set memberEmail to an empty string or handle as needed
+  setMemberEmail('');
+};
+
+useEffect(() => {
+  getMemberEmail();
+}, [userList, channelMembers]);
 
     return(
     <>  
@@ -106,56 +124,61 @@ function Profile({receiver, channel, userList, messages, setMessages}) {
        </p>
        
         <div className="search-bar-with-icon">
-        <span className="magnifying-glass"><BsSearch /></span>
-        <input
-                type = "text"
-                className="search-conversation-bar"
-                placeholder="Search in conversation" 
-                value={searchKeyword}
-                onChange={handleInputChange}
-                onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                        handleSearch();
-                        }
-                }}
-                />
+           <BsSearch
+           className="magnifying-glass" />
+          <input
+                  type = "text"
+                  className="search-conversation-bar"
+                  placeholder="Search in conversation" 
+                  value={searchKeyword}
+                  onChange={handleInputChange}
+                  onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                          handleSearch();
+                          setIsTyping(false)
+                          }
+                  }}
+                  />
         </div>
        
         </>
     )}
-   
-   {(isTyping || searchWindow) && (
-  <div className="messages">
-    {isTyping && <p className="press-enter-caption">Press "Enter" to search.</p>}
-    {searchWindow &&
-      (filteredMessages.length > 0 ? (
-        filteredMessages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`message ${
-              
-              ( msg.sender.email === receiver?.email)
-                ? "sender"
-                : "receiver"
-            }`}
-          >
-            <p>
-              {channel && <strong>{msg.sender.uid.split("@")[0]}: </strong>}
-              {msg.body}
-              <br />
-              <span className="timestamp">
-                {new Date(msg.created_at).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
-            </p>
-          </div>
-        ))
-      ) : (
-        <p>No messages match your search.</p>
-      ))}
-  </div>
+{isTyping && (<p className="press-enter-caption">Press "Enter" to search.</p>)}
+{(searchWindow) && (
+
+            <div className="filtered-messages">
+             
+              {searchWindow &&
+                (filteredMessages.length > 0 ? (
+                  filteredMessages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={`filtered-message ${
+                        
+                        ( msg.sender.email === receiver?.email)
+                          ? "sender"
+                          : "receiver"
+                      }`}
+                    >
+                      <p>
+                        {receiver?.id && <strong>{msg.sender.uid.split("@")[0]}: </strong>}
+                        {msg.body}
+                        <br />
+                        <span className="timestamp">
+                          {new Date(msg.created_at).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="no-msg-match">No messages match your search.</p>
+                  
+                ))}
+            </div>
+
 )}
 
 {channel && (<>
@@ -170,31 +193,48 @@ function Profile({receiver, channel, userList, messages, setMessages}) {
  
 
        <p className="phone-name">
-                <span className="phone-icon" >
+                <div className="group-icon" >
                 <RiGroup2Fill />
-                </span>
-               {channel?.name
+                </div>
+                <div className="group-name-profile">
+                {channel?.name
                         ? `${channel.name}`
                         : receiver?.id
                         ? receiver.id
                         : "Select a user or channel"}
+                </div>
+               
        </p>
        
-        <div className="search-bar-with-icon">
-        <span className="magnifying-glass"><BsSearch /></span>
-        <input
-                type = "text"
-                className="search-conversation-bar"
-                placeholder="DISPLAY USER BELOW" 
-                value={searchKeyword}
-                onChange={handleInputChange}
-                onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                        handleSearch();
-                        }
-                }}
-                />
-        </div>
+       
+{channel && channelMembers?.length > 0 ? (
+  <>
+    <p className="chat-members-header">Chat members:</p>
+    <div className="memberList-container">
+        {channelMembers.map((channelIndividual) => {
+          const { user_id } = channelIndividual; // Extract user_id
+          // Find the corresponding user in userList
+          const user = userList.find((u) => u.id === user_id);
+          return (  
+              <div key={channelIndividual.id} className="memberList-individual">
+                <div className="memberList-email-id-container"
+                >
+                <p><MdEmail/> {user ? `${user.email}` : "Email not found"}</p>
+                <p><FaPhoneAlt />{`${user_id}`} </p>
+                </div> 
+              </div>
+          );
+        })}
+    </div>
+  </>
+) : (
+  null
+)}
+
+
+
+
+         
 </>)}
         
     </div>

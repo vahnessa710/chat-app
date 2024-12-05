@@ -6,23 +6,19 @@ import Chat from '../Chat/Chat.jsx';
 import '../Channel/Channel.css';
 import Profile from "../Profile/Profile.jsx"
 
-function Channel({messages, setMessages}) {
+function Channel({messages, setMessages, channelDetails, setChannelDetails, channelMembers, setChannelMembers, userList, setUserList}) {
   const { userHeaders } = useData();
-  const [userList, setUserList] = useState([]);
-  const [channelDetails, setChannelDetails] = useState();
   const [channel, setChannel] = useState({id:17, name: 'testNewChannel'});
   const [receiver, setReceiver] = useState(null);
   const [channelList, setChannelList] = useState ([]); // render channel list 
   const [selectedUsers, setSelectedUsers] = useState([]); // checkbox for new channel
   const [isModalOpen, setIsModalOpen] = useState(false); // toggle window for creating new channel
   const [newChannelName, setNewChannelName] = useState(""); // new channel name
-  
-
+  console.log('Channel Props, channelMembers', channelMembers)
   // holder of receiver
   const handleReceiver = ({ id, email }) => {
     setReceiver({ id, email }); // Store both id and email
     setChannel(null); // Clear channel when selecting a receiver
-    console.log(receiver)
   };
   // function to get user list
   const getUsers = async () => {
@@ -41,7 +37,7 @@ function Channel({messages, setMessages}) {
     if(userList.length === 0) {
       getUsers();
     }
-  })
+  }, [userList])
 // function to get channel list
   const getChannelList = async () => {
     try {
@@ -61,7 +57,7 @@ function Channel({messages, setMessages}) {
     if(channelList.length === 0) {
       getChannelList();
     }
-  })
+  }, [channel])
 // holder of channel 
   const handleChannel = (id, name) => {
     setChannel( { id, name  }); // Store both id and name
@@ -69,30 +65,38 @@ function Channel({messages, setMessages}) {
   };
   
 // function to create new channel
-  const handleCreateChannel = async (e) => {
-    e.preventDefault();
-    try {
-      const newChannelData = { 
-        name: newChannelName, 
-        user_ids: selectedUsers
-      };
+const handleCreateChannel = async (e) => {
+  e.preventDefault();
 
-      const response = await axios.post(`${API_URL}/channels`, newChannelData, {headers: userHeaders});
+  // Enhanced validation for the channel name
+  const nameRegex = /^[a-zA-Z0-9-_ ]{3,30}$/; // Example: Alphanumeric, dashes, underscores, spaces, 3-30 characters
+  if (!newChannelName.trim()) {
+    return alert("Channel name cannot be empty.");
+  }
+  if (!nameRegex.test(newChannelName)) {
+    return alert("Channel name can only include letters, numbers, spaces, dashes, and underscores, and must be between 3-30 characters long.");
+  }
 
-      if (response.data) {
-        alert("Channel created successfully!");
-        setIsModalOpen(false);
-        
-      }
-    } catch (error) {
-      console.log(error)
-      alert(error.response?.data?.errors || "Error creating channel");
+  try {
+    const newChannelData = {
+      name: newChannelName.trim(),
+      user_ids: selectedUsers,
+    };
+
+    const response = await axios.post(`${API_URL}/channels`, newChannelData, { headers: userHeaders });
+
+    if (response.data) {
+      alert("Channel created successfully!");
+      setIsModalOpen(false);
+      setNewChannelName(""); // Reset form
+      setSelectedUsers([]); // Reset selected users
     }
-    if (newChannelName.trim()) {
-      
-    }
-    
-  };
+  } catch (error) {
+    console.error(error);
+    alert(error.response?.data?.errors || "Error creating channel");
+  }
+};
+
   // function to cancel creating a new channel
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -100,19 +104,29 @@ function Channel({messages, setMessages}) {
     setNewChannelName("");
   };
 
-// function to get DETAILS of currently displayed / user clicked channel
+// function to get DETAILS of a channel
   const getChannelDetails = async () => {
     try {
       const response = await axios.get(`${API_URL}/channels/${channel.id}`, { headers: userHeaders });
       const details = response.data.data;
       setChannelDetails(details);
-      
+      setChannelMembers(details.channel_members);
     } catch (error) {
       if (error.response.data.errors) {
-        return alert("Cannot get channel details");
+        return alert("Cannot get channel details", error);
       }
     }
   };
+
+  useEffect(() => {
+    if (channel && channelMembers.length === 0) {
+      getChannelDetails();
+    }
+  }, [channel, channelMembers]); // Add channel.id and channelMembers as dependencies
+  
+
+ 
+
 
   return (
     <div className="dashboard-container">
@@ -140,13 +154,8 @@ function Channel({messages, setMessages}) {
           <button 
             className="create-group-button" 
             onClick={() => {setIsModalOpen(true)}}>
-            + Create Channel
+            Create Channel
           </button>
-
-        <button
-          onClick={getChannelDetails}>
-          getChannelDetails
-        </button>
 
         <h2 className="dm-header">Direct messages</h2>
         
@@ -187,7 +196,7 @@ function Channel({messages, setMessages}) {
 
             <div className="user-list">
                 {userList.map((user) => (
-                <label key={selectedUsers.uid}>
+                <label key={user.id}>
                   <input
                     className="checkbox"
                     type="checkbox"
@@ -221,8 +230,22 @@ function Channel({messages, setMessages}) {
     
       )}
 
-      <Chat receiver={receiver} channel={channel} userList = {userList} messages = {messages} setMessages = {setMessages} />
-      <Profile receiver={receiver} channel={channel} userList = {userList} messages = {messages} setMessages = {setMessages}/>
+      <Chat 
+        receiver={receiver} 
+        channel={channel} 
+        userList = {userList} 
+        messages = {messages} 
+        setMessages = {setMessages} />
+
+      <Profile 
+        receiver={receiver} 
+        channel={channel} 
+        userList = {userList} 
+        messages = {messages} 
+        setMessages = {setMessages} 
+        channelDetails = {channelDetails}
+        channelMembers = {channelMembers}
+        setChannelMembers = {setChannelMembers}/>
    </div>
    );
   

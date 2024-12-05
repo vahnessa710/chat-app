@@ -1,14 +1,18 @@
 import { useData } from "../../context/DataProvider.jsx"
 import { FaHome, FaEnvelope, FaCog, FaUser, FaSignOutAlt } from 'react-icons/fa'; 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './Dashboard.css'; 
 import Channel from '../../Channel/Channel.jsx';
-import slacking from '../../assets/logo_landscape.png';
 import logo_only from '../../assets/logo_only.png';
 
 function Dashboard({onLogout}) {
   const { userHeaders } = useData();
   const [messages, setMessages] = useState([]);
+  const [userList, setUserList] = useState([]);
+  const [channelDetails, setChannelDetails] = useState([]);
+  const [channelMembers, setChannelMembers] = useState([]);
+  
+  
   return (
     <div className="dashboard-container">
 
@@ -49,7 +53,15 @@ function Dashboard({onLogout}) {
           </div>
         </header>
 
-        <Channel messages ={messages} setMessages={setMessages} />
+        <Channel 
+        userList= {userList} 
+        setUserList = {setUserList}
+        messages ={messages} 
+        setMessages={setMessages} 
+        channelDetails ={channelDetails} 
+        setChannelDetails = {setChannelDetails} 
+        channelMembers = {channelMembers} 
+        setChannelMembers = {setChannelMembers} />
 
       </div>
       
