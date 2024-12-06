@@ -9,12 +9,14 @@
   height: 530px; /* Optional: Fix height for chat area */
 }
 .receiver-header-container {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  margin:0;
-  padding: 15px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  padding: 10px 15px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
 }
+
 
 /* Header styling */
 .group-window > h3 {
@@ -75,6 +77,7 @@
   font-size: 14px;
   line-height: 1.5;
 }
+
 
 
 /* Error message styling */
@@ -203,7 +206,6 @@
 .timestamp {
   font-size: 0.8em;
   color: gray;
-  display: block;
   margin-top: 5px;
 }
 

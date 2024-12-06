@@ -8,10 +8,11 @@ import logo_only from '../../assets/logo_only.png';
 function Dashboard({onLogout}) {
   const { userHeaders } = useData();
   const [messages, setMessages] = useState([]);
+  const [receiver, setReceiver] = useState(null);
   const [userList, setUserList] = useState([]);
   const [channelDetails, setChannelDetails] = useState([]);
   const [channelMembers, setChannelMembers] = useState([]);
-  
+  const [channel, setChannel] = useState({id:17, name: 'testNewChannel'});
   
   return (
     <div className="dashboard-container">
@@ -58,11 +59,15 @@ function Dashboard({onLogout}) {
         setUserList = {setUserList}
         messages ={messages} 
         setMessages={setMessages} 
+        receiver = {receiver} 
+        setReceiver = {setReceiver}
         channelDetails ={channelDetails} 
         setChannelDetails = {setChannelDetails} 
         channelMembers = {channelMembers} 
-        setChannelMembers = {setChannelMembers} />
-
+        setChannelMembers = {setChannelMembers}
+        channel = {channel}
+        setChannel ={setChannel} />
+       
       </div>
       
     </div>

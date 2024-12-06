@@ -7,7 +7,7 @@ import '../Chat/Chat.css';
 import { IoIosMore } from "react-icons/io";
 
 
-function Chat({receiver, channel, userList, messages, setMessages}) {
+function Chat({receiver, setReceiver, channel, userList, messages, setMessages}) {
     const { userHeaders } = useData();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -209,7 +209,7 @@ function Chat({receiver, channel, userList, messages, setMessages}) {
                         minute: "2-digit",
                         month: "2-digit",
                         day: "2-digit",
-                        year: "2-digit",
+                        year: "2-digit",                       
                       })}
                     </span>
                   </p>

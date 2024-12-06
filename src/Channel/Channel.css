@@ -83,7 +83,7 @@
 }
 
 .group-name:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 /* User List */

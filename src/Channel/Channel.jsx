@@ -6,10 +6,22 @@ import Chat from '../Chat/Chat.jsx';
 import '../Channel/Channel.css';
 import Profile from "../Profile/Profile.jsx"
 
-function Channel({messages, setMessages, channelDetails, setChannelDetails, channelMembers, setChannelMembers, userList, setUserList}) {
+function Channel(
+  { messages, 
+    setMessages, 
+    receiver, 
+    setReceiver,
+    channelDetails, 
+    setChannelDetails, 
+    channelMembers, 
+    setChannelMembers, 
+    userList, 
+    setUserList,
+    channel,
+    setChannel }) {
+
   const { userHeaders } = useData();
-  const [channel, setChannel] = useState({id:17, name: 'testNewChannel'});
-  const [receiver, setReceiver] = useState(null);
+  
   const [channelList, setChannelList] = useState ([]); // render channel list 
   const [selectedUsers, setSelectedUsers] = useState([]); // checkbox for new channel
   const [isModalOpen, setIsModalOpen] = useState(false); // toggle window for creating new channel
@@ -119,7 +131,7 @@ const handleCreateChannel = async (e) => {
   };
 
   useEffect(() => {
-    if (channel && channelMembers.length === 0) {
+    if (channel?.id) {
       getChannelDetails();
     }
   }, [channel, channelMembers]); // Add channel.id and channelMembers as dependencies
@@ -232,14 +244,18 @@ const handleCreateChannel = async (e) => {
 
       <Chat 
         receiver={receiver} 
+        setReceiver = {setReceiver}
         channel={channel} 
+        setChannel = {setChannel}
         userList = {userList} 
         messages = {messages} 
         setMessages = {setMessages} />
 
       <Profile 
         receiver={receiver} 
+        setReceiver = {setReceiver}
         channel={channel} 
+        setChannel={setChannel}
         userList = {userList} 
         messages = {messages} 
         setMessages = {setMessages} 

@@ -5,13 +5,14 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
 import { RiGroup2Fill } from "react-icons/ri";
 
-function Profile({receiver, channel, messages, userList, channelDetails, channelMembers, setChannelMembers}) {
+function Profile({receiver, setReceiver, channel, setChannel, messages, setMessages, userList, channelDetails, channelMembers, setChannelMembers}) {
  const [searchWindow, setSearchWindow] = useState(false);
  const [searchKeyword, setSearchKeyword] = useState(""); // State for search keyword
  const [filteredMessages, setFilteredMessages] = useState([]); // State for filtered messages
  const [isTyping, setIsTyping] = useState(false);
  const [memberEmail, setMemberEmail] = useState('');
  console.log('Profile Props, channelDetails:', channelDetails)
+ console.log('Profile Props, receiver:', receiver)
 
    // Generate initials for receiver
    const initials = receiver?.email
@@ -30,12 +31,12 @@ function Profile({receiver, channel, messages, userList, channelDetails, channel
         setChannelMembers([]);
       }, [receiver, channel]); // Runs when the receiver or channel changes
 
-        useEffect(() => {
-        if (searchKeyword.trim() === "") {
-        setFilteredMessages([]); // Clear filtered messages
-        setSearchWindow(false); // Hide the search window
-        }
-        }, [searchKeyword]);
+    useEffect(() => {
+    if (searchKeyword.trim() === "") {
+    setFilteredMessages([]); // Clear filtered messages
+    setSearchWindow(false); // Hide the search window
+    }
+    }, [searchKeyword]);
 
   // Function to handle search
   const handleSearch = () => {
@@ -54,10 +55,12 @@ function Profile({receiver, channel, messages, userList, channelDetails, channel
       };
       
 
-      const handleInputChange = (e) => {
-        setSearchKeyword(e.target.value);
-        setIsTyping(true); // User is typing
-      };
+    const handleInputChange = (e) => {
+      setSearchKeyword(e.target.value);
+      setIsTyping(true); // User is typing
+    };
+
+    
 
      // Function to get the email of a member based on the user_id match
 const getMemberEmail = () => {
@@ -72,6 +75,12 @@ const getMemberEmail = () => {
   }
   // If no match is found, set memberEmail to an empty string or handle as needed
   setMemberEmail('');
+};
+
+const handleChannelMemberClick = (user) => {
+  setReceiver(user) // Update the receiver for direct messaging
+  setChannel(null)
+  console.log('Receiver set to:', user); // Debug log
 };
 
 useEffect(() => {
@@ -217,7 +226,9 @@ useEffect(() => {
           const user = userList.find((u) => u.id === user_id);
           return (  
               <div key={channelIndividual.id} className="memberList-individual">
-                <div className="memberList-email-id-container"
+                <div 
+                className="memberList-email-id-container"
+                onClick= {() => handleChannelMemberClick(user)}
                 >
                 <p><MdEmail/> {user ? `${user.email}` : "Email not found"}</p>
                 <p><FaPhoneAlt />{`${user_id}`} </p>
