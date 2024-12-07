@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 15px;
-  background-color: #ffffff;
+  background-color: var(--white);
   border-bottom: 1px solid #e5e5e5;
 }
 
@@ -52,7 +52,7 @@
 /* Sender's message styling */
 .message.sender {
   background-color: #d1e7fd; /* Light blue */
-  color: #003366; /* Darker text color for contrast */
+  color:var(--sender);/* Darker text color for contrast */
   align-self: flex-end; /* Align message to the right */
   border-top-right-radius: 0; /* Adjust border radius for visual flow */
 }
@@ -60,7 +60,7 @@
 /* Receiver's message styling */
 .message.receiver {
   background-color: #e7f9d1; /* Light green */
-  color: #004d00; /* Darker text color for contrast */
+  color: var(--receiver); /* Darker text color for contrast */
   align-self: flex-start; /* Align message to the left */
   border-top-left-radius: 0; /* Adjust border radius for visual flow */
 }
@@ -102,7 +102,7 @@
 
 /* Send button */
 .send-btn {
-  background-color: #0073e6;
+  background-color: var(--blue_accent);
   color: white;
   border: none;
   height: 40px;
@@ -137,7 +137,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--white);
   padding: 20px;
   border-radius: 8px;
   width: 400px;

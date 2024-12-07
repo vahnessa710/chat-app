@@ -5,7 +5,16 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
 import { RiGroup2Fill } from "react-icons/ri";
 
-function Profile({receiver, setReceiver, channel, setChannel, messages, setMessages, userList, channelDetails, channelMembers, setChannelMembers}) {
+function Profile({
+  receiver, 
+  setReceiver, 
+  channel, 
+  setChannel, 
+  messages, 
+  userList, 
+  channelDetails, 
+  channelMembers, 
+  setChannelMembers}) {
  const [searchWindow, setSearchWindow] = useState(false);
  const [searchKeyword, setSearchKeyword] = useState(""); // State for search keyword
  const [filteredMessages, setFilteredMessages] = useState([]); // State for filtered messages
@@ -218,7 +227,12 @@ useEffect(() => {
        
 {channel && channelMembers?.length > 0 ? (
   <>
-    <p className="chat-members-header">Chat members:</p>
+    <p 
+      className="chat-members-header"
+      data-testid ="chatWord">
+      Chat members:
+    </p>
+    
     <div className="memberList-container">
         {channelMembers.map((channelIndividual) => {
           const { user_id } = channelIndividual; // Extract user_id
@@ -241,11 +255,7 @@ useEffect(() => {
 ) : (
   null
 )}
-
-
-
-
-         
+      
 </>)}
         
     </div>

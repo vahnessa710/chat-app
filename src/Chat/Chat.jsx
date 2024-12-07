@@ -5,7 +5,7 @@ import { API_URL } from "../constants/Constants";
 import { IoMdSend } from "react-icons/io";
 import '../Chat/Chat.css';
 import { IoIosMore } from "react-icons/io";
-
+import Primary from '../Primary/Primary';
 
 function Chat({receiver, setReceiver, channel, userList, messages, setMessages}) {
     const { userHeaders } = useData();
@@ -116,6 +116,7 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages})
 
 
     return (
+      
     <div className={`group-window ${loading ? "no-scroll" : ""}`}>
       {receiver || channel ? (
         <>
@@ -254,8 +255,10 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages})
           </div>
         </>
       ) : (
-        <p>Select a user or channel to view messages.</p>
+        null
       )}
+
+      
     </div>
   );
 }

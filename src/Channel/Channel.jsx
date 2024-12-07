@@ -5,6 +5,7 @@ import { API_URL } from "../constants/Constants";
 import Chat from '../Chat/Chat.jsx';
 import '../Channel/Channel.css';
 import Profile from "../Profile/Profile.jsx"
+import Primary from "../Primary/Primary.jsx";
 
 function Channel(
   { messages, 
@@ -18,7 +19,9 @@ function Channel(
     userList, 
     setUserList,
     channel,
-    setChannel }) {
+    setChannel,
+    primary = {primary},
+    setPrimary = {setPrimary} }) {
 
   const { userHeaders } = useData();
   
@@ -241,7 +244,9 @@ const handleCreateChannel = async (e) => {
         </div>
     
       )}
-
+      <Primary
+        primary = {primary}
+        setPrimary = {setPrimary} />
       <Chat 
         receiver={receiver} 
         setReceiver = {setReceiver}

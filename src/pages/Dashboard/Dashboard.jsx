@@ -1,18 +1,29 @@
-import { useData } from "../../context/DataProvider.jsx"
 import { FaHome, FaEnvelope, FaCog, FaUser, FaSignOutAlt } from 'react-icons/fa'; 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import './Dashboard.css'; 
 import Channel from '../../Channel/Channel.jsx';
 import logo_only from '../../assets/logo_only.png';
+import { useData } from '../../context/DataProvider.jsx';
 
 function Dashboard({onLogout}) {
   const { userHeaders } = useData();
+  const [ primary, setPrimary ] = useState(false);
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState(null);
   const [userList, setUserList] = useState([]);
   const [channelDetails, setChannelDetails] = useState([]);
   const [channelMembers, setChannelMembers] = useState([]);
   const [channel, setChannel] = useState({id:17, name: 'testNewChannel'});
+  
+   // Function to toggle dark mode
+     // Function to toggle dark mode
+  const toggleDarkMode = () => {
+    document.documentElement.classList.toggle('dark');
+  };
+
+  const handlePrimary = () => {
+    setPrimary((prevPrimary) => !prevPrimary);
+  };
   
   return (
     <div className="dashboard-container">
@@ -23,7 +34,8 @@ function Dashboard({onLogout}) {
           <img 
           src={logo_only} 
           alt="logo"
-          className="logo-only" />
+          className="logo-only"
+          data-testid = "logo" />
 
 
           <div className='icon-container'>
@@ -35,12 +47,15 @@ function Dashboard({onLogout}) {
             <a><FaEnvelope className="icon" /></a>
           </div>
 
-          <div className='icon-container'>
+          <div className='icon-container'
+          onClick={toggleDarkMode}>
             <a><FaCog className="icon" /></a>
           </div>
           
-          <div className='icon-container'>
-            <a><FaUser className="icon" /></a>
+          <div className='icon-container'
+          onClick={handlePrimary} >
+            <a><FaUser className="icon"
+            /></a>
           </div>
           <div className="user-info">
             <span>{userHeaders.uid.split("@")[0]}</span>
@@ -66,7 +81,10 @@ function Dashboard({onLogout}) {
         channelMembers = {channelMembers} 
         setChannelMembers = {setChannelMembers}
         channel = {channel}
-        setChannel ={setChannel} />
+        setChannel ={setChannel} 
+        primary = {primary} 
+        setPrimary = {setPrimary} 
+        />
        
       </div>
       

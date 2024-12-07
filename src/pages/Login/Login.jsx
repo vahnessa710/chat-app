@@ -140,7 +140,10 @@ function Login(props) {
     {/* Account Creation Window */}
     {isSignup ? (
         <form onSubmit={handleSignup}>
-          <h2 className='create-an-account'>Create an Account</h2>
+          <h2 
+          className='create-an-account'
+          data-testid="createAcctHeader"
+          >Create an Account</h2>
           
             <p className = "create-account-description">It's quick and easy.</p>
             <hr />
@@ -183,7 +186,8 @@ function Login(props) {
 
             <button 
               type="submit" 
-              className="btn">
+              className="btn"
+              >
             Sign Up
             </button>
             
@@ -224,7 +228,7 @@ function Login(props) {
 
         <button 
           type="submit" 
-          className="btn">
+          className="btn" >
             Log In
         </button>
 
@@ -237,7 +241,9 @@ function Login(props) {
         <div className='new-account-container'>
           <p
             className="new-account-btn" 
-            onClick={() => setIsSignup(true)}>
+            onClick={() => setIsSignup(true)}
+            data-testid="createAcctBtn"
+            id ="create-account-button">
             Create new account
           </p>
         </div>

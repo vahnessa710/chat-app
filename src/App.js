@@ -29,7 +29,7 @@ function App() {
               element={
                 isAuthenticated ? (
                  
-                  <Dashboard 
+                  <Dashboard                  
                   onLogout={handleLogout}
                    />
                 ) : (
