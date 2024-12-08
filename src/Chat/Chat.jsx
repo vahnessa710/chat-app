@@ -54,28 +54,36 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
 
   // function to send message
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission behavior
     const receiverClass = channel ? "Channel" : "User";
     const receiverId = channel ? channel.id : receiver?.id;
-    try{
-        const messageInfo = {
-            receiver_id: receiverId,
-            receiver_class: receiverClass,
-            body: reply
-        }
-        
-        const response = await axios.post(`${API_URL}/messages`, messageInfo, { headers: userHeaders});
-        const { data } = response;
-        if(data.data){
-             alert("Message sent!");
-            setReply(""); // Clear the input
-            fetchMessages(); // Refresh messages
-        }
-          } catch(error){
-              console.log(error);
-          } 
-          
+  
+    try {
+      const messageInfo = {
+        receiver_id: receiverId,
+        receiver_class: receiverClass,
+        body: reply
       };
+  
+      const response = await axios.post(`${API_URL}/messages`, messageInfo, { headers: userHeaders });
+      const { data } = response;
+      if (data.data) {
+        alert("Message sent!");
+        setReply(""); // Clear the input
+        fetchMessages(); // Refresh messages
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission
+      handleSubmit(e); // Call the submit handler manually
+    }
+  };
+  
 
  // function to Add User to existing channel
   const addUserToChannel = async (e) => {
@@ -223,12 +231,13 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
 
           </div>
 
-          <div className="chat-bar">
+          <form className="chat-bar"  onSubmit={handleSubmit}>
             <input
               className="chat-input"
               type="text"
               value={reply}
               onChange={handleReply}
+              onKeyDown={handleKeyDown}
             />
               <button onClick={toggleEmojiModal} className="emoji-btn">
               😊
@@ -250,10 +259,10 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
               </div>
             )}
 
-            <button onClick={handleSubmit} className="send-btn">
+            <button className="send-btn">
               <IoMdSend />
             </button>
-          </div>
+          </form>
         </>
       ) : (
         null
