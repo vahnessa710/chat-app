@@ -71,7 +71,7 @@ function Profile({
 
     
 
-     // Function to get the email of a member based on the user_id match
+// Function to get the email of a member based on the user_id match
 const getMemberEmail = () => {
   // Iterate over the channelMembers array
   for (let member of channelMembers) {
@@ -89,7 +89,6 @@ const getMemberEmail = () => {
 const handleChannelMemberClick = (user) => {
   setReceiver(user) // Update the receiver for direct messaging
   setChannel(null)
-  console.log('Receiver set to:', user); // Debug log
 };
 
 useEffect(() => {

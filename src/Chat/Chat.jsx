@@ -5,9 +5,9 @@ import { API_URL } from "../constants/Constants";
 import { IoMdSend } from "react-icons/io";
 import '../Chat/Chat.css';
 import { IoIosMore } from "react-icons/io";
-import Primary from '../Primary/Primary';
 
-function Chat({receiver, setReceiver, channel, userList, messages, setMessages, editButton, setEditButton}) {
+
+function Chat({receiver, setReceiver, channel, userList, messages, setMessages, editButton}) {
     const { userHeaders } = useData();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

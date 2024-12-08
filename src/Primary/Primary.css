@@ -3,7 +3,7 @@
     z-index: 1000;
     width: 300px;
     background-color: var(--white);
-    height: 200px;
+    height: 250px;
     right: 300px;
     padding: 15px;
     display: flex;
@@ -50,4 +50,10 @@
 
 .id-phone-email-container-p {
     margin-bottom: 10px;
+}
+
+.slacking-user-details {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
 }

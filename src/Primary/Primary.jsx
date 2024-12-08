@@ -5,7 +5,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import rose from '../assets/rose.png'
 import { FaUserCircle } from "react-icons/fa";
 
-function Primary({ primary, setPrimary, loggedUser}){
+function Primary({ primary, setPrimary, loggedUser, loggedUserId}){
     const containerRef = useRef(null);
       // Close `primary` when clicking outside the container
       useEffect(() => {
@@ -35,12 +35,13 @@ function Primary({ primary, setPrimary, loggedUser}){
       />
     </div>
     <hr />
+    <p className="slacking-user-details">Slacking User Details:</p>
     <div className='id-phone-email-container'>
       <p className='id-phone-email-container-p'>
         <MdEmail className='email-icon' /> {loggedUser.uid}
       </p>
       <p className='id-phone-email-container-p'>
-        <FaPhoneAlt className='phone-icon' /> {loggedUser.id}
+        <FaPhoneAlt className='phone-icon' /> {loggedUserId}
       </p>
     </div>
   </>
@@ -52,11 +53,12 @@ function Primary({ primary, setPrimary, loggedUser}){
       </div>
       <hr />
       <div className='id-phone-email-container'>
+        <p className="slacking-user-details">Slacking User Details:</p>
         <p className='id-phone-email-container-p'>
           <MdEmail className='email-icon' /> {loggedUser.uid}
         </p>
         <p className='id-phone-email-container-p'>
-          <FaPhoneAlt className='phone-icon' /> {loggedUser.id}
+          <FaPhoneAlt className='phone-icon' /> {loggedUserId}
         </p>
       </div>
     </>

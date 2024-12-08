@@ -13,6 +13,7 @@ function App() {
   const handleLogout = () => {
     setIsAuthenticated(false);
   };
+  const [loggedUserId, setLoggedUserId] = useState();
 
   return (
     <DataProvider>
@@ -21,7 +22,11 @@ function App() {
             {/* Upon first loading of the app, this will be loaded first */}
             <Route
               path="/login"
-              element={<Login onLogin={handleLogin} />}
+              element={
+              <Login 
+                onLogin={handleLogin}
+                loggedUserId = {loggedUserId}
+                setLoggedUserId = {setLoggedUserId} />}
             />
             {/* Protected pages. User should be "authenticated" first before they can access this page */}
             <Route
@@ -31,6 +36,7 @@ function App() {
                  
                   <Dashboard                  
                   onLogout={handleLogout}
+                  loggedUserId = {loggedUserId}
                    />
                 ) : (
                   <Navigate to="/login" />

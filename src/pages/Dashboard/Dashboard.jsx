@@ -1,31 +1,36 @@
 import { FaHome, FaEnvelope, FaCog, FaUser, FaSignOutAlt } from 'react-icons/fa'; 
 import { useState } from "react";
+import { API_URL } from "../../constants/Constants.jsx";
 import './Dashboard.css'; 
 import Channel from '../../Channel/Channel.jsx';
 import logo_only from '../../assets/logo_only.png';
 import { useData } from '../../context/DataProvider.jsx';
 
-function Dashboard({onLogout}) {
+function Dashboard({onLogout, loggedUserId}) {
   const { userHeaders } = useData();
   const [ primary, setPrimary ] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [receiver, setReceiver] = useState(null);
+  const [receiver, setReceiver] = useState();
   const [userList, setUserList] = useState([]);
   const [channelDetails, setChannelDetails] = useState([]);
   const [channelMembers, setChannelMembers] = useState([]);
   const [channel, setChannel] = useState([]);
-  const loggedUser = ({uid: userHeaders.uid, id: 14})
+  const [userId, setUserId] = useState(receiver);
+  const loggedUser = ({uid: userHeaders.uid, id: receiver})
   const [ editButton, setEditButton ] = useState(false);
+
+ 
      // Function to toggle dark mode
   const toggleDarkMode = () => {
     document.documentElement.classList.toggle('dark');
-    console.log(loggedUser);
+    
   };
 
   const handlePrimary = () => {
     setPrimary((prevPrimary) => !prevPrimary);
   };
-  
+
+
   return (
     <div className="dashboard-container">
 
@@ -41,7 +46,7 @@ function Dashboard({onLogout}) {
 
           <div className='icon-container'>
             <a
-            ><FaHome className="icon" /></a>
+            ><FaHome className="icon"/></a>
           </div>
               
           <div className='icon-container' >
@@ -88,6 +93,9 @@ function Dashboard({onLogout}) {
         loggedUser = {loggedUser}
         editButton = {editButton}
         setEditButton = {setEditButton}
+        userId = {userId} 
+        setUserId = {setUserId}
+        loggedUserId = {loggedUserId}
         />
        
       </div>

@@ -8,14 +8,14 @@ import logoLandscape from "../../assets/logo_landscape.png";
 import rose from '../../assets/rose.png';
 import { IoMdAddCircle } from "react-icons/io";
 
-function Login(props) {
-  const { onLogin } = props;
+function Login({onLogin, loggedUserId, setLoggedUserId}) {
+  // const { onLogin } = props;
   const { handleHeaders } = useData();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isSignup, setIsSignup] = useState(false); // Toggle signup
-
+  
   const navigate = useNavigate();
   
 
@@ -29,12 +29,12 @@ function Login(props) {
 
       const response = await axios.post(`${API_URL}/auth/sign_in`, loginCredentials);
       const { data, headers } = response;
-
+      
       if(data && headers) {
         // headers as values in our context
         handleHeaders(headers);
-        console.log('Response:', response); // Inspect the full response object
-        console.log(response.data); 
+        setLoggedUserId(response.data.data.id);
+        console.log('loggedUserId', response.data.data.id);
         onLogin();
         navigate('/dashboard');
       }
@@ -59,6 +59,7 @@ function Login(props) {
       if (data && headers) {
         // Use handleHeaders to save headers to context
         handleHeaders(headers);
+        setLoggedUserId(response.data.data.id);
         onLogin();
         navigate("/dashboard");
       }
@@ -89,6 +90,7 @@ function Login(props) {
       
       if (response.data) {
         alert("Account created successfully! You can now log in.");
+        navigate('/dashboard');
         setIsSignup(false); // Switch back to login
       }
     } catch (error) {

@@ -24,14 +24,18 @@ function Channel(
     setPrimary = {setPrimary},
     loggedUser = {loggedUser},
     editButton,
-    setEditButton}) {
+    setEditButton,
+    userId, 
+    setUserId,
+    loggedUserId}) {
 
   const { userHeaders } = useData();
   const [channelList, setChannelList] = useState ([]); // render channel list 
   const [selectedUsers, setSelectedUsers] = useState([]); // checkbox for new channel
   const [isModalOpen, setIsModalOpen] = useState(false); // toggle window for creating new channel
   const [newChannelName, setNewChannelName] = useState(""); // new channel name
-  console.log('Channel Props, channelMembers', channelMembers)
+  
+
   // holder of receiver
   const handleReceiver = ({ id, email }) => {
     setReceiver({ id, email }); // Store both id and email
@@ -109,6 +113,8 @@ const handleCreateChannel = async (e) => {
       setIsModalOpen(false);
       setNewChannelName(""); // Reset form
       setSelectedUsers([]); // Reset selected users
+      getChannelList();
+      setChannel({id: response.data.id, name: response.data.name });
     }
   } catch (error) {
     console.error(error);
@@ -248,7 +254,12 @@ const handleCreateChannel = async (e) => {
       <Primary
         primary = {primary}
         setPrimary = {setPrimary}
-        loggedUser = {loggedUser} />
+        loggedUser = {loggedUser}
+        receiver={receiver} 
+        userId ={userId} 
+        setUserId ={setUserId}
+        loggedUserId = {loggedUserId}
+         />
       <Chat 
         receiver={receiver} 
         setReceiver = {setReceiver}
