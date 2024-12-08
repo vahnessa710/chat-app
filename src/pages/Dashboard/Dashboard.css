@@ -86,7 +86,7 @@ body {
 
 
 .icon-container > a {
-  color: rgb(121, 113, 113);
+  color: var(--icon);
 }
 
 .icon-container {

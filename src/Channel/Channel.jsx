@@ -21,10 +21,12 @@ function Channel(
     channel,
     setChannel,
     primary = {primary},
-    setPrimary = {setPrimary} }) {
+    setPrimary = {setPrimary},
+    loggedUser = {loggedUser},
+    editButton,
+    setEditButton}) {
 
   const { userHeaders } = useData();
-  
   const [channelList, setChannelList] = useState ([]); // render channel list 
   const [selectedUsers, setSelectedUsers] = useState([]); // checkbox for new channel
   const [isModalOpen, setIsModalOpen] = useState(false); // toggle window for creating new channel
@@ -34,12 +36,13 @@ function Channel(
   const handleReceiver = ({ id, email }) => {
     setReceiver({ id, email }); // Store both id and email
     setChannel(null); // Clear channel when selecting a receiver
+    setEditButton(false);
   };
   // function to get user list
   const getUsers = async () => {
     try {
       const response = await axios.get(`${API_URL}/users`, { headers: userHeaders });
-      const users = response.data.data;
+      const users = response.data.data || [];
       setUserList(users);
     } catch (error) {
       if(error.response.data.errors) {
@@ -57,7 +60,7 @@ function Channel(
   const getChannelList = async () => {
     try {
       const response = await axios.get(`${API_URL}/channels`, { headers: userHeaders });
-      const channels = response.data.data;
+      const channels = response.data.data || [];
       setChannelList(channels); 
     } catch (error) {
       if(error.response.data.errors) {
@@ -77,6 +80,7 @@ function Channel(
   const handleChannel = (id, name) => {
     setChannel( { id, name  }); // Store both id and name
     setReceiver(null);
+    setEditButton(true);
   };
   
 // function to create new channel
@@ -121,6 +125,7 @@ const handleCreateChannel = async (e) => {
 
 // function to get DETAILS of a channel
   const getChannelDetails = async () => {
+    if(!userHeaders.id)
     try {
       const response = await axios.get(`${API_URL}/channels/${channel.id}`, { headers: userHeaders });
       const details = response.data.data;
@@ -150,20 +155,16 @@ const handleCreateChannel = async (e) => {
 
           <h2 className="channel-header">Channel</h2>
             <ul className="channel-list-container">
-                {channelList.map((channel, index) => (
-                  <li 
-                    key={channel.id} 
-                    className='group-list'
-                    onClick={() => handleChannel(channel.id, channel.name)}
-                    >
-                    <a 
-                      className='group-name'
-                      href="#"
-                      >
-                      {`# ${channel.name}`}
-                    </a>
-                  </li>
-                ))}       
+            {channelList && channelList.length > 0 ? (
+  channelList.map((channel, index) => (
+    <li key={channel.id} className="group-list" onClick={() => handleChannel(channel.id, channel.name)}>
+      <a className="group-name" href="#">{`# ${channel.name}`}</a>
+    </li>
+  ))
+) : (
+  <p>Loading channels...</p>
+)}
+   
             </ul>
 
           <button 
@@ -246,7 +247,8 @@ const handleCreateChannel = async (e) => {
       )}
       <Primary
         primary = {primary}
-        setPrimary = {setPrimary} />
+        setPrimary = {setPrimary}
+        loggedUser = {loggedUser} />
       <Chat 
         receiver={receiver} 
         setReceiver = {setReceiver}
@@ -254,7 +256,9 @@ const handleCreateChannel = async (e) => {
         setChannel = {setChannel}
         userList = {userList} 
         messages = {messages} 
-        setMessages = {setMessages} />
+        setMessages = {setMessages}
+        editButton={editButton}
+        setEditButton={setEditButton} />
 
       <Profile 
         receiver={receiver} 

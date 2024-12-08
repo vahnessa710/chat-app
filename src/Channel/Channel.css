@@ -37,8 +37,12 @@
   text-align: center;
 }
 
+.create-button:hover{
+  background-color: var(--hover_blue);
+  transition: background-color 0.5s ease;
+}
 .create-group-button:hover {
-  background-color: hsl(110, 63%, 34%);
+  background-color: var(--hover_green);
   transition: background-color 0.5s ease;
 }
 
@@ -177,8 +181,8 @@
   margin-right: 5px;
 }
 
-.create-button, .save-button:hover {
-  background-color: hsl(217, 100%, 42%);
+.save-button:hover {
+  background-color: var(--hover_blue);
   transition: background-color 0.5s ease;
 }
 

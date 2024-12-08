@@ -92,20 +92,21 @@
   .forgot-pw{
     text-align: center;
     font-size: 14px;
-    color: hsl(217, 90%, 51%);
+    color: var(--blue_accent);
   }
 
   .toggle-link{
     margin-left: 5px;
-    color: hsl(217, 90%, 51%);
+    color: var(--blue_accent);
   }
   .toggle-link:hover{
-    color: hsl(217, 90%, 51%);
+    color: var(--blue_accent);
     cursor: pointer;
     text-decoration: underline;
   }
 
   .create-an-account{
+    color: var(--black);
     margin-bottom: 8px;
     text-align: center;
   }

@@ -103,8 +103,8 @@
   
   .filtered-message.receiver {
     font-size: 14px;
-    background-color: #e7f9d1;
-    color: #004d00;
+    background-color: var(--receiver_light);
+    color: hsl(281, 29%, 19%);
     align-self: flex-start;
     border-top-left-radius: 0;
     border-radius: 5px;
@@ -114,8 +114,8 @@
 
 .filtered-message.sender {
   font-size: 14px;
-  background-color: #d1e7fd;
-  color: #003366;
+  background-color: var(--sender_light);
+  color: hsl(281, 29%,19%);
   align-self: flex-end;
   border-top-right-radius: 0;
   border-radius: 5px;

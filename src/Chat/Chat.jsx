@@ -7,7 +7,7 @@ import '../Chat/Chat.css';
 import { IoIosMore } from "react-icons/io";
 import Primary from '../Primary/Primary';
 
-function Chat({receiver, setReceiver, channel, userList, messages, setMessages}) {
+function Chat({receiver, setReceiver, channel, userList, messages, setMessages, editButton, setEditButton}) {
     const { userHeaders } = useData();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -16,7 +16,7 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages})
     const [isEmojiModalOpen, setIsEmojiModalOpen] = useState(false); 
     const messagesRef = useRef(null); // Reference to the end of the messages list
     const [channelUser, setChannelUser] = useState([]);
-
+    
     const fetchMessages = async () => {
       if (!receiver && !channel ) return; // Don't fetch if no receiver is selected
       setLoading(true);
@@ -126,15 +126,16 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages})
                 ? `# ${channel.name}`
                 : receiver?.email
                 ? receiver.email.split("@")[0]
-                : "Select a user or channel"}
+                : "Welcome to Slacking!"}
             </h3>
 
-            <button
-              className="edit-channel-button"
-              onClick={() => setIsEditModalOpen(true)}
-            >
-              <IoIosMore />
-            </button>
+            {editButton && (
+                  <button
+                  className="edit-channel-button"
+                  onClick={() => setIsEditModalOpen(true)}>
+                  <IoIosMore />
+                </button>
+          )}
 
             {isEditModalOpen && (
               <div className="modal">
@@ -186,7 +187,7 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages})
           {error && <p className="error">{error}</p>}
 
           <div className="messages" ref={messagesRef} >
-            {messages.length > 0 ? (
+            {messages && messages.length > 0 ? (
               messages.map((msg) => (
                 <div
                   key={msg.id}
@@ -217,7 +218,7 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages})
                 </div>
               ))
             ) : (
-              null
+              <p>No messages to display.</p>
             )}
 
           </div>

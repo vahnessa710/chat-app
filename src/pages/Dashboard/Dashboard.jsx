@@ -13,12 +13,13 @@ function Dashboard({onLogout}) {
   const [userList, setUserList] = useState([]);
   const [channelDetails, setChannelDetails] = useState([]);
   const [channelMembers, setChannelMembers] = useState([]);
-  const [channel, setChannel] = useState({id:17, name: 'testNewChannel'});
-  
-   // Function to toggle dark mode
+  const [channel, setChannel] = useState([]);
+  const loggedUser = ({uid: userHeaders.uid, id: 14})
+  const [ editButton, setEditButton ] = useState(false);
      // Function to toggle dark mode
   const toggleDarkMode = () => {
     document.documentElement.classList.toggle('dark');
+    console.log(loggedUser);
   };
 
   const handlePrimary = () => {
@@ -58,7 +59,7 @@ function Dashboard({onLogout}) {
             /></a>
           </div>
           <div className="user-info">
-            <span>{userHeaders.uid.split("@")[0]}</span>
+            <span>{loggedUser.uid.split("@")[0]}</span>
             <button 
               className="logout-button"
               onClick={onLogout}
@@ -84,6 +85,9 @@ function Dashboard({onLogout}) {
         setChannel ={setChannel} 
         primary = {primary} 
         setPrimary = {setPrimary} 
+        loggedUser = {loggedUser}
+        editButton = {editButton}
+        setEditButton = {setEditButton}
         />
        
       </div>

@@ -16,27 +16,29 @@
   --blue_accent: hsl(217, 90%, 61%);
   --hover_blue: hsl(217, 90%, 51%);
   --blue_light:hsl(217, 100%, 87%);
-  --sender: #003366; 
-  --receiver: #004d00;
+  --sender_light: #cae4ff; 
+  --receiver_light: hsl(93, 82%, 85%);
+  --chat_name_receiver: hsl(217, 90%, 51%);
   --chat_bar: #F0F2F4;
   --red: #B82121;
+  --icon: rgb(121, 113, 113);
 }
 
 :root.dark {
   --black: #8b3a3a;
   --gray_light: #f3f7f8;
-  --gray_dark: hsl(214, 14%, 90%);
+  --gray_dark: hsl(273, 100%, 92%);
   --gray: hsl(0, 4%, 67%);
-  /* --white: hsl(0, 7%, 73%); */
   --white: hsl(332, 71%, 96%);
   --green: hsl(283, 98%, 20%);
   --hover_green: hsl(283, 98%, 30%);
   --blue_accent: hsl(283, 98%, 20%);
   --hover_blue: hsl(283, 98%, 30%);
-
-  --sender:#0084FF;
-  --receiver: #F0F0F0;
+  --chat_name_receiver: hsl(0, 4%, 15%);
+  /* --sender_light:hsl(282, 75%, 88%); */
+  --sender_light:hsl(281, 30%, 80%);
+  --receiver_light: hsl(281, 29%, 89%);
   --chat_bar: #F0F2F4;
   --red: #B82121;
-
+  --icon:hsl(283, 98%, 20%);
 }

@@ -3,7 +3,9 @@ import '../Primary/Primary.css'
 import { MdEmail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import rose from '../assets/rose.png'
-function Primary({ primary, setPrimary}){
+import { FaUserCircle } from "react-icons/fa";
+
+function Primary({ primary, setPrimary, loggedUser}){
     const containerRef = useRef(null);
       // Close `primary` when clicking outside the container
       useEffect(() => {
@@ -23,19 +25,43 @@ function Primary({ primary, setPrimary}){
         {primary && (
             <div className={`primary-container ${primary ? '' : 'hidden'}`} ref={containerRef} data-testid = 'primary'>
             
-            <div className='id-img-container'>
-                <img 
-                className='id-img'
-                src= {rose}/>
-            </div>
-            <hr></hr>
-            <div className='id-phone-email-container' >
-                <p className='id-phone-email-container-p'><MdEmail
-                className = 'email-icon'/> vahnessa.gonzales@gmail.com</p>
-                <p className='id-phone-email-container-p'><FaPhoneAlt
-                className = 'phone-icon'/> 14</p>
-            </div>
-    
+            {loggedUser?.uid === "vahnessa.gonzales@gmail.com" ? (
+  <>
+    <div className='id-img-container'>
+      <img 
+        className='id-img'
+        src={rose}
+        alt="User profile" 
+      />
+    </div>
+    <hr />
+    <div className='id-phone-email-container'>
+      <p className='id-phone-email-container-p'>
+        <MdEmail className='email-icon' /> {loggedUser.uid}
+      </p>
+      <p className='id-phone-email-container-p'>
+        <FaPhoneAlt className='phone-icon' /> {loggedUser.id}
+      </p>
+    </div>
+  </>
+) : (
+    <>
+      <div className='id-img-container'>
+        <FaUserCircle
+        className='id-img' />
+      </div>
+      <hr />
+      <div className='id-phone-email-container'>
+        <p className='id-phone-email-container-p'>
+          <MdEmail className='email-icon' /> {loggedUser.uid}
+        </p>
+        <p className='id-phone-email-container-p'>
+          <FaPhoneAlt className='phone-icon' /> {loggedUser.id}
+        </p>
+      </div>
+    </>
+  )}
+
         </div>
         )}
     </div>            
