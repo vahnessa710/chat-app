@@ -245,6 +245,12 @@ function Chat({ receiver, setReceiver, channel, userList, messages, setMessages,
               type="text"
               value={reply}
               onChange={handleReply}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); // Prevent the default form submission behavior
+                  handleSubmit(e);
+                }
+              }}
             />
             <button onClick={toggleEmojiModal} className="emoji-btn">
               😊
@@ -271,7 +277,7 @@ function Chat({ receiver, setReceiver, channel, userList, messages, setMessages,
 
             <button 
             className="send-btn"
-            onClick={handleSubmit}
+            onClick={handleSubmit} 
             >
               <IoMdSend />
             </button>

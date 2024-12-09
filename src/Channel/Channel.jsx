@@ -119,7 +119,7 @@ const handleCreateChannel = async (e) => {
     }
   } catch (error) {
     console.error(error);
-    alert(error.response?.data?.errors || "Error creating channel");
+    alert(error.response?.data?.errors || "Error creating channel, please invite users.");
   }
 };
 
@@ -277,7 +277,8 @@ const handleCreateChannel = async (e) => {
 
             <button 
              className="create-button"
-             onClick={handleCreateChannel}>
+             onClick={handleCreateChannel}
+             disabled={selectedUsers.length === 0} >
               Create
             </button>
 

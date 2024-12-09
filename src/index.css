@@ -25,6 +25,7 @@
 }
 
 :root.dark {
+  --background: hsl(332, 71%, 96%);
   --black: #8b3a3a;
   --gray_light: #f3f7f8;
   --gray_dark: hsl(273, 100%, 92%);

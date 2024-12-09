@@ -279,3 +279,9 @@
   background-color: #f8f9fa; /* Light background for contrast */
   border-radius: 4px; /* Subtle rounded corners for a modern look */
 }
+
+.create-button[disabled] {
+  background-color: #ccc; /* or a color indicating the disabled state */
+  cursor: not-allowed; /* show a "not-allowed" cursor */
+  opacity: 0.5; /* make it appear faded */
+}
