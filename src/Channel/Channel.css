@@ -48,14 +48,34 @@
 
 /* Channel List */
 .channel-list-container {
-  margin: 10px 0 15px;
+  margin: 8px 0 15px;
   padding: 8px;
   list-style: none;
   overflow-y: scroll;
   background-color: #f9f9f9;
   border: 1px solid rgba(128, 128, 128, 0.2);
   border-radius: 6px;
+  height: 250px;
 }
+
+.channel-list-container::-webkit-scrollbar {
+  width: 6px; /* Narrow scrollbar width */
+}
+
+.channel-list-container::-webkit-scrollbar-track {
+  background: #f9f9f9; /* Matches the container background for subtlety */
+  border-radius: 6px; /* Rounded corners for a clean look */
+}
+
+.channel-list-container::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3); /* Soft gray for minimalistic appearance */
+  border-radius: 6px; /* Matches the track for consistency */
+}
+
+.channel-list-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.5); /* Slightly darker on hover for feedback */
+}
+
 
 .group-list {
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -101,6 +121,25 @@
   border-radius: 6px;
   background-color: #f9f9f9;
 }
+
+.userList-container::-webkit-scrollbar {
+  width: 6px; /* Narrow scrollbar width */
+}
+
+.userList-container::-webkit-scrollbar-track {
+  background: #f9f9f9; /* Matches the container background for subtlety */
+  border-radius: 6px; /* Rounded corners for a clean look */
+}
+
+.userList-container::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3); /* Soft gray for minimalistic appearance */
+  border-radius: 6px; /* Matches the track for consistency */
+}
+
+.userList-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.5); /* Slightly darker on hover for feedback */
+}
+
 
 .userList-individual {
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -196,3 +235,47 @@
   transition: background-color 0.5s ease;
 }
 
+.search-bar {
+  width: 100%;
+  max-width: 300px; /* Optional: Set a max width for better alignment */
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+  color: #333; /* Dark text for readability */
+  background-color: #f9f9f9; /* Subtle background to indicate interactivity */
+  border: 1px solid #ccc; /* Light border for a clean look */
+  border-radius: 6px; /* Rounded corners for a modern design */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow for depth */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transitions for interactivity */
+  height: 30px;
+}
+
+/* Focus effect */
+.search-bar:focus {
+  outline: none; /* Remove default outline */
+  background-color: #fff; /* Slightly brighter background on focus */
+}
+
+/* Placeholder style */
+.search-bar::placeholder {
+  color: #888; /* Subtle placeholder text color */
+  
+}
+
+/* Disabled state */
+.search-bar:disabled {
+  background-color: #e9ecef; /* Light gray background */
+  color: #6c757d; /* Muted text */
+  border-color: #ddd; /* Lightened border */
+  cursor: not-allowed; /* Indicate non-interactivity */
+}
+
+.no-results {
+  color: #6c757d; /* Neutral gray for a clean, muted tone */
+  font-size: 14px; /* Subtle, unobtrusive size */
+  font-style: italic; /* Adds a touch of elegance */
+  text-align: center; /* Centers the text for better visual balance */
+  padding: 10px; /* Optional: Adds padding to maintain consistency */
+  background-color: #f8f9fa; /* Light background for contrast */
+  border-radius: 4px; /* Subtle rounded corners for a modern look */
+}

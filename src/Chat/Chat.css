@@ -170,6 +170,24 @@
   color: var(--charcoal-dark);
 }
 
+.user-list::-webkit-scrollbar {
+  width: 6px; /* Narrow scrollbar width */
+}
+
+.user-list::-webkit-scrollbar-track {
+  background: #f9f9f9; /* Matches the container background for subtlety */
+  border-radius: 6px; /* Rounded corners for a clean look */
+}
+
+.user-list::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3); /* Soft gray for minimalistic appearance */
+  border-radius: 6px; /* Matches the track for consistency */
+}
+
+.user-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.5); /* Slightly darker on hover for feedback */
+}
+
 .checkbox {
   margin-right: 10px;
 }
@@ -268,4 +286,14 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+.save-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.save-button:disabled:hover {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

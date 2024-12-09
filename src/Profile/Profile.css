@@ -214,7 +214,6 @@
 .filtered-messages {
   overflow-y: auto; /* Enable vertical scrolling */
   max-height: 300px; /* Adjust height as needed */
-  border: 1px solid rgba(128, 128, 128, 0.2); /* Optional: Add a border for distinction */
   padding: 10px;
   box-sizing: border-box; /* Ensure padding and border fit within dimensions */
 }

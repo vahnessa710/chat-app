@@ -80,6 +80,7 @@ function Channel(
       getChannelList();
     }
   }, [channel])
+  
 // holder of channel 
   const handleChannel = (id, name) => {
     setChannel( { id, name  }); // Store both id and name
@@ -151,6 +152,29 @@ const handleCreateChannel = async (e) => {
   }, [channel, channelMembers]); // Add channel.id and channelMembers as dependencies
   
 
+
+  const [filteredChannels, setFilteredChannels] = useState([]); // filtered channel list
+  const [filteredUsers, setFilteredUsers] = useState([]); // filtered user list
+ const [channelSearch, setChannelSearch] = useState(""); // search input for channels
+  const [userSearch, setUserSearch] = useState(""); // search input for users
+
+  // Filter channels based on search input
+  useEffect(() => {
+    const filtered = channelList.filter((channel) =>
+      channel.name.toLowerCase().includes(channelSearch.toLowerCase())
+    );
+    setFilteredChannels(filtered);
+  }, [channelSearch, channelList]);
+
+  // Filter users based on search input
+  useEffect(() => {
+    const filtered = userList.filter((user) =>
+      user.email.toLowerCase().includes(userSearch.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+  }, [userSearch, userList]);
+
+  // Render the component
  
 
 
@@ -160,18 +184,26 @@ const handleCreateChannel = async (e) => {
       <div className="channel-bar">
 
           <h2 className="channel-header">Channel</h2>
-            <ul className="channel-list-container">
-            {channelList && channelList.length > 0 ? (
-  channelList.map((channel, index) => (
-    <li key={channel.id} className="group-list" onClick={() => handleChannel(channel.id, channel.name)}>
-      <a className="group-name" href="#">{`# ${channel.name}`}</a>
-    </li>
-  ))
-) : (
-  <p>Loading channels...</p>
-)}
-   
-            </ul>
+          <input
+          className="search-bar"
+          type="text"
+          placeholder="Search channels..."
+          value={channelSearch}
+          onChange={(e) => setChannelSearch(e.target.value)}
+        />
+        <ul className="channel-list-container">
+          {filteredChannels.length > 0 ? (
+            filteredChannels.map((channel) => (
+              <li key={channel.id} className="group-list" onClick={() => handleChannel(channel.id, channel.name)}>
+                <a className="group-name" href="#">{`# ${channel.name}`}</a>
+              </li>
+            ))
+          ) : (
+            <p
+            className="no-results">No channels found.</p>
+          )}
+        </ul>
+
 
           <button 
             className="create-group-button" 
@@ -179,26 +211,33 @@ const handleCreateChannel = async (e) => {
             Create Channel
           </button>
 
-        <h2 className="dm-header">Direct messages</h2>
-        
-          <ul className="userList-container">
-              {userList &&
-                      userList.map((individual) => {
-                          const { id, email } = individual;
-                          return (
-                            <div
-                            className="userList-individual"
-                            key={individual.id} >
-                              <div
-                                onClick={()=>handleReceiver({ id, email })}>
-                                <p>{email.split("@")[0]}</p>       
-                              </div>
-                            </div>
-                          )
-                      })
-                    }
-              { !userList && <div>No users available</div> }
-          </ul>
+          <h2 className="dm-header">Direct messages</h2>
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search users..."
+          value={userSearch}
+          onChange={(e) => setUserSearch(e.target.value)}
+        />
+        <ul className="userList-container">
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map((individual) => {
+              const { id, email } = individual;
+              return (
+                <div
+                  className="userList-individual"
+                  key={id}>
+                  <div onClick={() => handleReceiver({ id, email })}>
+                    <p>{email.split("@")[0]}</p>       
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div
+             className="no-results">No users found.</div>
+          )}
+        </ul>
     </div>
 
       {/* Modal for Channel Creation */}

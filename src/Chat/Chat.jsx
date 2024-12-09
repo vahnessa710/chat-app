@@ -6,95 +6,97 @@ import { IoMdSend } from "react-icons/io";
 import '../Chat/Chat.css';
 import { IoIosMore } from "react-icons/io";
 
+function Chat({ receiver, setReceiver, channel, userList, messages, setMessages, editButton }) {
+  const { userHeaders } = useData();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [reply, setReply] = useState('');
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEmojiModalOpen, setIsEmojiModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(''); // New state for search term
+  const [filteredUsers, setFilteredUsers] = useState(userList); // Filtered user list
+  const [channelUser, setChannelUser] = useState([]);
+  const messagesRef = useRef(null);
 
-function Chat({receiver, setReceiver, channel, userList, messages, setMessages, editButton}) {
-    const { userHeaders } = useData();
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [reply, setReply] = useState('')
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // To manage edit modal
-    const [isEmojiModalOpen, setIsEmojiModalOpen] = useState(false); 
-    const messagesRef = useRef(null); // Reference to the end of the messages list
-    const [channelUser, setChannelUser] = useState([]);
-    
-    const fetchMessages = async () => {
-      if (!receiver && !channel ) return; // Don't fetch if no receiver is selected
-      setLoading(true);
-      setError(null);
-      const receiverClass = channel ? "Channel" : "User";
-      const receiverId = channel ? channel.id : receiver?.id;
+  useEffect(() => {
+    // Filter users when searchTerm changes
+    setFilteredUsers(
+      userList.filter((user) =>
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [searchTerm, userList]);
 
-      try {
-        const response = await axios.get(
-          `${API_URL}/messages?receiver_id=${receiverId}&receiver_class=${receiverClass}`,
-          { headers: userHeaders });
-          setMessages(response.data.data);
-          
-      } catch (err) {
-          setError("Failed to fetch messages. Please try again.");
-      } finally {
-          setLoading(false);
-      }
-      
-    };
-      useEffect(() => {     
-        setMessages([]);
-        fetchMessages();        
-      }, [channel, receiver, userHeaders]); // Re-fetch messages when receiver changes
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); // Update search term
+  };
 
-      useEffect(() => {
-        if (messagesRef.current) {
-          messagesRef.current.scrollTop = messagesRef.current.scrollHeight; // Scroll to the bottom of the messages container
-        }
-      }, [messages]);
-
-      const handleReply = (e) => {
-        setReply(e.target.value); // Update state with input value
-      };
-
-  // function to send message
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+  const fetchMessages = async () => {
+    if (!receiver && !channel) return;
+    setLoading(true);
+    setError(null);
     const receiverClass = channel ? "Channel" : "User";
     const receiverId = channel ? channel.id : receiver?.id;
-  
+
+    try {
+      const response = await axios.get(
+        `${API_URL}/messages?receiver_id=${receiverId}&receiver_class=${receiverClass}`,
+        { headers: userHeaders }
+      );
+      setMessages(response.data.data);
+    } catch (err) {
+      setError("Failed to fetch messages. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setMessages([]);
+    fetchMessages();
+  }, [channel, receiver, userHeaders]);
+
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const handleReply = (e) => {
+    setReply(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const receiverClass = channel ? "Channel" : "User";
+    const receiverId = channel ? channel.id : receiver?.id;
+
     try {
       const messageInfo = {
         receiver_id: receiverId,
         receiver_class: receiverClass,
-        body: reply
+        body: reply,
       };
-  
+
       const response = await axios.post(`${API_URL}/messages`, messageInfo, { headers: userHeaders });
-      const { data } = response;
-      if (data.data) {
+      if (response.data.data) {
         alert("Message sent!");
-        setReply(""); // Clear the input
-        fetchMessages(); // Refresh messages
+        setReply("");
+        fetchMessages();
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // Prevent form submission
-      handleSubmit(e); // Call the submit handler manually
-    }
-  };
-  
-
- // function to Add User to existing channel
   const addUserToChannel = async (e) => {
     e.preventDefault();
     try {
-      const newUserData = { 
+      const newUserData = {
         id: channel.id,
-        member_id: Number(channelUser)
+        member_id: Number(channelUser),
       };
-      console.log('newUserData:', newUserData)
-      const response = await axios.post(`${API_URL}/channel/add_member`, newUserData, {headers: userHeaders});
+      const response = await axios.post(`${API_URL}/channel/add_member`, newUserData, { headers: userHeaders });
 
       if (response.data) {
         alert("User added successfully!");
@@ -102,16 +104,14 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
         setChannelUser("");
       }
     } catch (error) {
-      console.log(error)
-      alert(error.response?.data?.errors || "user is already in the channel.");
+      alert(error.response?.data?.errors || "User is already in the channel.");
     }
-    
-  }
-  
+  };
+
   const handleCancelAddUser = () => {
     setIsEditModalOpen(false);
     setChannelUser("");
-  }
+  };
 
   const toggleEmojiModal = () => {
     setIsEmojiModalOpen(!isEmojiModalOpen);
@@ -122,9 +122,7 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
     setIsEmojiModalOpen(false);
   };
 
-
-    return (
-      
+  return (
     <div className={`group-window ${loading ? "no-scroll" : ""}`}>
       {receiver || channel ? (
         <>
@@ -138,20 +136,31 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
             </h3>
 
             {editButton && (
-                  <button
-                  className="edit-channel-button"
-                  onClick={() => setIsEditModalOpen(true)}>
-                  <IoIosMore />
-                </button>
-          )}
+              <button
+                className="edit-channel-button"
+                onClick={() => setIsEditModalOpen(true)}
+              >
+                <IoIosMore />
+              </button>
+            )}
 
             {isEditModalOpen && (
               <div className="modal">
                 <div className="modal-content">
                   <h3>#{channel.name}</h3>
                   <h4>Add Users</h4>
+
+                  {/* Search Bar */}
+                  <input
+                    type="text"
+                    className="search-bar"
+                    placeholder="Search users..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+
                   <div className="user-list">
-                    {userList.map((user) => (
+                    {filteredUsers.map((user) => (
                       <label key={user.uid}>
                         <input
                           className="checkbox"
@@ -164,6 +173,7 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
                               e.target.checked
                                 ? [...prev, value]
                                 : prev.filter((u) => u !== value)
+                                
                             );
                           }}
                         />
@@ -172,7 +182,7 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
                     ))}
                   </div>
 
-                  <button className="save-button" onClick={addUserToChannel}>
+                  <button className="save-button" onClick={addUserToChannel} disabled={channelUser.length === 0}>
                     Save
                   </button>
                   <button
@@ -194,7 +204,7 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
 
           {error && <p className="error">{error}</p>}
 
-          <div className="messages" ref={messagesRef} >
+          <div className="messages" ref={messagesRef}>
             {messages && messages.length > 0 ? (
               messages.map((msg) => (
                 <div
@@ -213,13 +223,12 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
                     {msg.body}
                     <br />
                     <span className="timestamp">
-                      
                       {new Date(msg.created_at).toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
                         month: "2-digit",
                         day: "2-digit",
-                        year: "2-digit",                       
+                        year: "2-digit",
                       })}
                     </span>
                   </p>
@@ -228,47 +237,47 @@ function Chat({receiver, setReceiver, channel, userList, messages, setMessages, 
             ) : (
               <p>No messages to display.</p>
             )}
-
           </div>
 
-          <form className="chat-bar"  onSubmit={handleSubmit}>
+          <div className="chat-bar">
             <input
               className="chat-input"
               type="text"
               value={reply}
               onChange={handleReply}
-              onKeyDown={handleKeyDown}
             />
-              <button onClick={toggleEmojiModal} className="emoji-btn">
+            <button onClick={toggleEmojiModal} className="emoji-btn">
               😊
             </button>
 
             {isEmojiModalOpen && (
               <div className="emoji-modal">
                 <div className="emoji-picker">
-                  {['😊', '😂', '😍', '😢', '😎', '👍', '🙏', '❤️', '💔'].map((emoji) => (
-                    <button
-                      key={emoji}
-                      className="emoji"
-                      onClick={() => addEmojiToInput(emoji)}
-                    >
-                      {emoji}
-                    </button>
-                  ))}
+                  {["😊", "😂", "😍", "😢", "😎", "👍", "🙏", "❤️", "💔"].map(
+                    (emoji) => (
+                      <button
+                        key={emoji}
+                        className="emoji"
+                        onClick={() => addEmojiToInput(emoji)}
+                        type="button"
+                      >
+                        {emoji}
+                      </button>
+                    )
+                  )}
                 </div>
               </div>
             )}
 
-            <button className="send-btn">
+            <button 
+            className="send-btn"
+            onClick={handleSubmit}
+            >
               <IoMdSend />
             </button>
-          </form>
+          </div>
         </>
-      ) : (
-        null
-      )}
-
-      
+      ) : null}
     </div>
   );
 }
